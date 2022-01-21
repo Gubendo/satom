@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+Bonjour, {{ user.username|default:'Invité' }}!
+
+<div>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Déconnexion</a>&nbsp;
+        <a href="{% url 'password_change' %}">Modifier le mot de passe</a>
+    {% else %}
+        <a href="{% url 'login' %}">Connexion</a> &nbsp;
+        <a href="{% url 'register' %}">S'inscrire</a>
+    {% endif %}
+</div>
+
+{% endblock %}

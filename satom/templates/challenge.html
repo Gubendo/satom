@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block page_content %}
+<h1>Mot n°{{ challenge.pk }} : {{answer}} </h1> {{linebreaks}}
+<h2>Longueur du mot : {{longueur}} lettres</h2>
+<br>
+
+<div class="container">
+
+  {% for attempt in attempts %}
+    <div class="row">
+  {% for letter in attempt %}
+      <div class="col-md-1 ">
+      <strong><p style="color:rgb{{letter.color}};">{{ letter.letter }}</p></strong>
+          </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+
+    <br>
+
+<form action="" method="GET">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.guess }}
+
+        </div>
+        <button type="submit" class="btn btn-primary">Valider</button>
+
+</form>
+<br>
+{% if state == "win" %}
+<h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} </h1>
+<div class = "row">
+    <button onclick="myFunction()" class="btn">Partager votre score</button>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
+    </div>
+<br>
+<pre><h4>{{ emoji }}</h4></pre>
+
+{% elif state == "lose" %}
+<h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.pk }} et vous n'aurez pas la solution 😈</h1>
+{% else %}
+{% endif %}
+
+    <br>
+<script>
+function myFunction() {
+  navigator.clipboard.writeText("{{clipboard}}");
+  alert("Résultat collé dans le presse-papiers");
+}
+</script>
+{% endblock %}
+

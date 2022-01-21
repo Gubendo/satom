@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<h2>Inscription</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Inscription">
+</form>
+
+<a href="{% url 'login' %}">Retour à la connexion</a>
+{% endblock %}

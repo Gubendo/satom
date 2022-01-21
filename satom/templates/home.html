@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+
+
+
+{% block page_content %}
+
+<h1>Bienvenue sur le jeu du satom !!</h1> <br>
+<h2>Choisissez un mot :</h2>
+{% for chall in challenges %}
+    <a href="{% url 'challenge' chall.pk %}" class="btn btn-primary">{{ chall.id }}</a> &nbsp; &nbsp;
+
+
+{% endfor %}
+{% endblock %}
+
