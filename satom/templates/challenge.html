@@ -30,14 +30,14 @@
 </form>
 <br>
 {% if state == "win" %}
-<h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} </h1>
+<h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} en {{ time_spent }}</h1>
 <div class = "row">
     <button onclick="myFunction()" class="btn">Partager votre score</button>
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
     </div>
 <br>
-<pre><h4>{{ emoji }}</h4></pre>
+<!-- <pre><h4>{{ emoji }}</h4></pre> -->
 
 {% elif state == "lose" %}
 <h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.pk }} et vous n'aurez pas la solution 😈</h1>

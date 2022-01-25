@@ -7,10 +7,15 @@
 
 <h1>Bienvenue sur le jeu du satom !!</h1> <br>
 <h2>Choisissez un mot :</h2>
-{% for chall in challenges %}
-    <a href="{% url 'challenge' chall.pk %}" class="btn btn-primary">{{ chall.id }}</a> &nbsp; &nbsp;
-
+{% for button in buttons %}
+    {% if button.1 == "done" %}
+        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary done-btn">{{ button.0 }}</a> &nbsp; &nbsp;
+    {% else %}
+        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary">{{ button.0 }}</a> &nbsp; &nbsp;
+    {% endif %}
 
 {% endfor %}
 {% endblock %}
+
+
 
