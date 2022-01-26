@@ -8,8 +8,7 @@ import time
 answer_list = [] # mot ***** -> lettres révélées
 attempts = [] # liste des différents essais
 nb_try = 0
-#colors = {"correct": (255,0,0), "partial": (255,150,0), "false": (0,0,0)}
-colors = {"correct": (0,160,0), "partial": (255,150,0), "false": (0,0,0)}
+colors = {"correct": "#00A000", "partial": "#FF9600", "false": "#000000"}
 #emoji = {"correct": "🟥", "partial": "🟨", "false":"🟦"}
 emoji = {"correct": "🟩", "partial": "🟨", "false":"⬛"}
 state = "guess" # guess/win/lose
@@ -106,78 +105,81 @@ def challenge(request, pk):
     global emoji_clipboard
 
     curr_challenge = Challenge.objects.get(pk=pk)
-    print(curr_challenge)
     print(curr_challenge.completed.all())
+    chall_id = "challenge" + str(pk)
     word = curr_challenge.word
     longueur = len(word)
     form = GuessForm(longueur)
 
     if request.GET.get('guess'):
-        if session['nb_try'] < 6 and session['state'] == "guess":
+        if session[chall_id]['nb_try'] < 6 and session[chall_id]['state'] == "guess":
 
-            session['guess'] = str(request.GET.get('guess')).lower()
-            session['result'], session['answer_list'] = motus(session['guess'], word, session['answer_list'])
+            session[chall_id]['guess'] = str(request.GET.get('guess')).lower()
+            session[chall_id]['result'], session[chall_id]['answer_list'] = motus(session[chall_id]['guess'], word, session[chall_id]['answer_list'])
 
-            session['guess_list'] = list(session['guess'].upper())
+            session[chall_id]['guess_list'] = list(session[chall_id]['guess'].upper())
 
             for i in range(longueur):
-                session['attempts'][session['nb_try']][i]["letter"] = session['guess_list'][i]
-                session['attempts'][session['nb_try']][i]["value"] = session['result'][i]
-                session['attempts'][session['nb_try']][i]["color"] = colors[session['result'][i]]
+                session[chall_id]['attempts'][session[chall_id]['nb_try']][i]["letter"] = session[chall_id]['guess_list'][i]
+                session[chall_id]['attempts'][session[chall_id]['nb_try']][i]["value"] = session[chall_id]['result'][i]
+                session[chall_id]['attempts'][session[chall_id]['nb_try']][i]["color"] = colors[session[chall_id]['result'][i]]
 
-            session['nb_try'] += 1
+            session[chall_id]['nb_try'] += 1
 
-            if session['guess'].lower() == word.lower():
+            if session[chall_id]['guess'].lower() == word.lower():
                 # GG
-                session['state'] = "win"
-                session['ended'] = time.time()
-                session['time_spent'] = calcul_temps(session['started'], session['ended'])
+                session[chall_id]['state'] = "win"
+                session[chall_id]['ended'] = time.time()
+                session[chall_id]['time_spent'] = calcul_temps(session[chall_id]['started'], session[chall_id]['ended'])
 
-                session['attempts_emoji'], session['emoji_clipboard'] = to_emoji(session['attempts'], session['nb_try'], pk, session['time_spent'])
+                session[chall_id]['attempts_emoji'], session[chall_id]['emoji_clipboard'] = to_emoji(session[chall_id]['attempts'], session[chall_id]['nb_try'], pk, session[chall_id]['time_spent'])
                 curr_challenge.completed.add(request.user)
                 curr_challenge.save()
 
-            elif session['nb_try'] < 6:
+            elif session[chall_id]['nb_try'] < 6:
                 for j in range(longueur):
-                    if session['answer_list'][j] != '*':
-                        session['attempts'][session['nb_try']][j]["letter"] = session['answer_list'][j].upper()
-                        session['attempts'][session['nb_try']][j]["value"] = "correct"
-                        session['attempts'][session['nb_try']][j]["color"] = colors["correct"]
+                    if session[chall_id]['answer_list'][j] != '*':
+                        session[chall_id]['attempts'][session[chall_id]['nb_try']][j]["letter"] = session[chall_id]['answer_list'][j].upper()
+                        session[chall_id]['attempts'][session[chall_id]['nb_try']][j]["value"] = "correct"
+                        session[chall_id]['attempts'][session[chall_id]['nb_try']][j]["color"] = colors["correct"]
             else:
                 # FF
-                session['state'] = "lose"
+                session[chall_id]['state'] = "lose"
 
-    else:
-        session['nb_try'] = 0
-        session['answer_list'] = ["*"] * longueur
-        session['attempts'] = []
-        session['state'] = "guess"
-        session['attempts_emoji'] = ""
-        session['emoji_clipboard'] = ""
-        session['started'] = time.time()
-        session['time_spent'] = ""
+    elif not (chall_id in session.keys()):
+
+        session[chall_id] = {}
+        session[chall_id]['nb_try'] = 0
+        session[chall_id]['answer_list'] = ["*"] * longueur
+        session[chall_id]['attempts'] = []
+        session[chall_id]['state'] = "guess"
+        session[chall_id]['attempts_emoji'] = ""
+        session[chall_id]['emoji_clipboard'] = ""
+        session[chall_id]['started'] = time.time()
+        session[chall_id]['time_spent'] = ""
 
         for i in range(6):
-            session['attempt'] = []
+            session[chall_id]['attempt'] = []
             for j in range(longueur):
-                session['attempt'].append({"letter": "*", "value": "false", "color": colors["false"]})
-            session['attempts'].append(session['attempt'])
+                session[chall_id]['attempt'].append({"letter": "*", "value": "false", "color": colors["false"]})
+            session[chall_id]['attempts'].append(session[chall_id]['attempt'])
 
-        session['answer_list'][0] = word[0]
-        session['attempts'][nb_try][0]["letter"] = session['answer_list'][0].upper()
-        session['attempts'][nb_try][0]["value"] = "correct"
-        session['attempts'][nb_try][0]["color"] = colors["correct"]
+        session[chall_id]['answer_list'][0] = word[0]
+        session[chall_id]['attempts'][nb_try][0]["letter"] = session[chall_id]['answer_list'][0].upper()
+        session[chall_id]['attempts'][nb_try][0]["value"] = "correct"
+        session[chall_id]['attempts'][nb_try][0]["color"] = colors["correct"]
 
+    print(session[chall_id]['attempts'])
     context = {
         "challenge": curr_challenge,
         "form": form,
         "longueur": longueur,
-        "answer": "".join(session['answer_list']),
-        "attempts": session['attempts'],
-        "state": session['state'],
-        "emoji": session['attempts_emoji'],
-        "clipboard": session['emoji_clipboard'],
-        "time_spent": session['time_spent'],
+        "answer": "".join(session[chall_id]['answer_list']),
+        "attempts": session[chall_id]['attempts'],
+        "state": session[chall_id]['state'],
+        "emoji": session[chall_id]['attempts_emoji'],
+        "clipboard": session[chall_id]['emoji_clipboard'],
+        "time_spent": session[chall_id]['time_spent'],
     }
     return render(request, 'challenge.html', context)
 

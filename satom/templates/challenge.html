@@ -10,7 +10,7 @@
     <div class="row">
   {% for letter in attempt %}
       <div class="col-md-1 ">
-      <strong><p style="color:rgb{{letter.color}};">{{ letter.letter }}</p></strong>
+          <font color="{{letter.color}}"><strong><p>{{ letter.letter }}</p></strong></font>
           </div>
       {% endfor %}
     </div>

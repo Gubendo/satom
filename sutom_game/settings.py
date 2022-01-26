@@ -75,6 +75,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sutom_game.wsgi.application'
 
+SESSION_SAVE_EVERY_REQUEST=True
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
