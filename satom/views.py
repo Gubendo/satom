@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from satom.models import Challenge
+from django.db.models import Count
+from users.models import Profile
 from satom.forms import GuessForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -53,8 +55,19 @@ def calcul_temps(started, ended):
 
     else:
         temps = str(diff) + " secondes"
-    return temps
+    return [temps, diff]
 
+def calcul_stats(full_list):
+    total = 0
+    long = len(full_list)
+    if long == 0:
+        avg = 0
+    else:
+        for i in range(long):
+            total += full_list[i]
+
+        avg = total / long
+    return round(avg, 2)
 
 def motus(guess, word, a_list):
 
@@ -81,11 +94,12 @@ def motus(guess, word, a_list):
 
     return result_list, a_list
 
+@login_required()
 def home(request):
     buttons = []
     challenges = Challenge.objects.all().order_by('id')
     for chall in challenges:
-        if request.user in chall.completed.all():
+        if chall in request.user.profile.completedChall.all():
             buttons.append([chall.pk, "done"])
         else:
             buttons.append([chall.pk, "nodone"])
@@ -100,12 +114,10 @@ def home(request):
 def challenge(request, pk):
     session = request.session
 
-
     global attempts_emoji
     global emoji_clipboard
 
     curr_challenge = Challenge.objects.get(pk=pk)
-    print(curr_challenge.completed.all())
     chall_id = "challenge" + str(pk)
     word = curr_challenge.word
     longueur = len(word)
@@ -132,9 +144,11 @@ def challenge(request, pk):
                 session[chall_id]['ended'] = time.time()
                 session[chall_id]['time_spent'] = calcul_temps(session[chall_id]['started'], session[chall_id]['ended'])
 
-                session[chall_id]['attempts_emoji'], session[chall_id]['emoji_clipboard'] = to_emoji(session[chall_id]['attempts'], session[chall_id]['nb_try'], pk, session[chall_id]['time_spent'])
-                curr_challenge.completed.add(request.user)
-                curr_challenge.save()
+                session[chall_id]['attempts_emoji'], session[chall_id]['emoji_clipboard'] = to_emoji(session[chall_id]['attempts'], session[chall_id]['nb_try'], pk, session[chall_id]['time_spent'][0])
+
+                request.user.profile.completedChall.add(curr_challenge)
+                request.user.profile.challenges.append([pk, session[chall_id]['time_spent'], session[chall_id]['nb_try']])
+                request.user.profile.save()
 
             elif session[chall_id]['nb_try'] < 6:
                 for j in range(longueur):
@@ -156,7 +170,7 @@ def challenge(request, pk):
         session[chall_id]['attempts_emoji'] = ""
         session[chall_id]['emoji_clipboard'] = ""
         session[chall_id]['started'] = time.time()
-        session[chall_id]['time_spent'] = ""
+        session[chall_id]['time_spent'] = ["", 0]
 
         for i in range(6):
             session[chall_id]['attempt'] = []
@@ -169,7 +183,6 @@ def challenge(request, pk):
         session[chall_id]['attempts'][nb_try][0]["value"] = "correct"
         session[chall_id]['attempts'][nb_try][0]["color"] = colors["correct"]
 
-    print(session[chall_id]['attempts'])
     context = {
         "challenge": curr_challenge,
         "form": form,
@@ -179,8 +192,26 @@ def challenge(request, pk):
         "state": session[chall_id]['state'],
         "emoji": session[chall_id]['attempts_emoji'],
         "clipboard": session[chall_id]['emoji_clipboard'],
-        "time_spent": session[chall_id]['time_spent'],
+        "time_spent": session[chall_id]['time_spent'][0],
     }
     return render(request, 'challenge.html', context)
 
+def classement(request):
+    scores = []
+    users = Profile.objects.all().annotate(score=Count('completedChall')).order_by('-score')
 
+    for user in users:
+        words = user.challenges
+        time_list = []
+        try_list = []
+        for word in words:
+            time_list.append(word[1][1])
+            try_list.append(word[2])
+        avg_time = calcul_stats(time_list)
+        avg_try = calcul_stats(try_list)
+
+        scores.append([user, user.score, avg_try, avg_time])
+    context = {
+        "users": scores,
+    }
+    return render(request, 'classement.html', context)

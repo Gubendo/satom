@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
 
 {% block page_content %}
-Bonjour, {{ user.username|default:'Invité' }}!
+<div class="row">Bonjour, {{ user.username|default:'Invité' }}!</div>
 
 <div>
     {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Déconnexion</a>&nbsp;
-        <a href="{% url 'password_change' %}">Modifier le mot de passe</a>
+       <div class="row"> <a href="{% url 'logout' %}">Déconnexion</a>&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'password_change' %}">Modifier le mot de passe</a> </div>
+    <br>
+    <div class="row"><p><strong> Historique des mots : </strong></p></div>
+    {% for word in words %}
+        <div class="row">
+            Mot n°{{ word.0 }} réussi en {{ word.2 }} essais et en {{ word.1.0 }}
+            </div>
+    {% endfor %}
+    <br>
+    <div class="row">
+        <strong>Nombre d'essais moyen : {{ avg_try }}</strong>
+    </div>
+    <div class="row">
+        <strong>Temps moyen : {{ avg_time }} secondes</strong>
+    </div>
     {% else %}
-        <a href="{% url 'login' %}">Connexion</a> &nbsp;
-        <a href="{% url 'register' %}">S'inscrire</a>
+        <div class="row"><a href="{% url 'login' %}">Connexion</a> &nbsp;&nbsp;&nbsp;
+        <a href="{% url 'register' %}">S'inscrire</a> </div>
     {% endif %}
 </div>
 

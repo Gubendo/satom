@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="row"><h1> Classement des utilisateurs </h1></div>
+<br>
+{% for user in users %}
+      <div class="row">
+          <p><strong>{{ user.0 }} : </strong>{{ user.1 }} mots complétés, {{ user.2 }} essais moyens, {{ user.3 }} secondes en moyenne</p>
+          </div>
+      {% endfor %}
+{% endblock %}
