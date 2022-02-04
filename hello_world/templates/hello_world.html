@@ -2,6 +2,6 @@
 {% extends "base.html" %}
 {% block page_content %}
 <h1>Bienvenue sur mon site :)</h1>
-{% load staticfiles %}
+{% load static %}
 <a href="satom/{{daily}}"><img src={% static "peepo.png" %} alt="peepoG"/></a> Le mot du jour vous est présenté par : <a href="http://satom.fr">Thomas :)</a>
 {% endblock %}
