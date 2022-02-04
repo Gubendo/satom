@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<style>
+<style type="text/css">
     label, input {
         display: block;
     }
@@ -10,8 +10,18 @@
     .btn-primary.done-btn {
 	background-color: #008000;
 	border-color: #008000;
+
+	html body {
+	background-volor: #008000 !important;
+	}
+
+    .blue {
+      background-color: blue;
+    }
+
 }
 </style>
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
@@ -41,7 +51,7 @@
 
 </nav>
 <br>
-<div class="container">
+<div class="blue container">
 {% block page_content %}{% endblock %}
 </div>
 

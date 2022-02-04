@@ -19,6 +19,10 @@
 
     <br>
 
+{% if completed and state == "guess" %}
+<h1> Vous avez déjà résolu le mot n°{{ challenge.pk }}</h1>
+    <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
+{% else %}
 <form action="" method="GET">
         {% csrf_token %}
         <div class="form-group">
@@ -27,7 +31,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Valider</button>
 
+    <br>
+
 </form>
+{% endif %}
 <br>
 {% if state == "win" %}
 <h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} en {{ time_spent }}</h1>
@@ -37,7 +44,6 @@
     <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
     </div>
 <br>
-<!-- <pre><h4>{{ emoji }}</h4></pre> -->
 
 {% elif state == "lose" %}
 <h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.pk }} et vous n'aurez pas la solution 😈</h1>

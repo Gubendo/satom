@@ -123,6 +123,10 @@ def challenge(request, pk):
     longueur = len(word)
     form = GuessForm(longueur)
 
+    completed = False
+
+
+
     if request.GET.get('guess'):
         if session[chall_id]['nb_try'] < 6 and session[chall_id]['state'] == "guess":
 
@@ -183,6 +187,18 @@ def challenge(request, pk):
         session[chall_id]['attempts'][nb_try][0]["value"] = "correct"
         session[chall_id]['attempts'][nb_try][0]["color"] = colors["correct"]
 
+
+    if curr_challenge in request.user.profile.completedChall.all():
+        completed = True
+        session[chall_id]['answer_list'] = word.split()
+        attempt = []
+        for j in range(longueur):
+            attempt.append({"letter": word[j].upper(), "value": "correct", "color": colors["correct"]})
+        session[chall_id]['attempts'][0] = attempt
+
+    else:
+        completed = False
+
     context = {
         "challenge": curr_challenge,
         "form": form,
@@ -193,6 +209,7 @@ def challenge(request, pk):
         "emoji": session[chall_id]['attempts_emoji'],
         "clipboard": session[chall_id]['emoji_clipboard'],
         "time_spent": session[chall_id]['time_spent'][0],
+        "completed": completed,
     }
     return render(request, 'challenge.html', context)
 
