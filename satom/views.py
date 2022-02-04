@@ -188,7 +188,7 @@ def challenge(request, pk):
         session[chall_id]['attempts'][nb_try][0]["color"] = colors["correct"]
 
 
-    if curr_challenge in request.user.profile.completedChall.all():
+    if curr_challenge in request.user.profile.completedChall.all() and session[chall_id]["state"] == "guess":
         completed = True
         session[chall_id]['answer_list'] = word.split()
         attempt = []
