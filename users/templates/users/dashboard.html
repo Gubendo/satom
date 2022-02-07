@@ -2,7 +2,7 @@
 
 {% block page_content %}
 <title>Mon compte</title>
-<div class="row">Bonjour, {{ user.username|default:'Invité' }}!</div>
+<div class="row">Bonjour,&nbsp; <strong>{{ user.username|default:'Invité' }}</strong>!</div>
 
 <div>
     {% if user.is_authenticated %}
