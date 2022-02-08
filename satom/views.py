@@ -17,9 +17,10 @@ state = "guess" # guess/win/lose
 attempts_emoji = "" # version affichée sur le site
 emoji_clipboard = "" # version collée dans le presse-papiers
 
-def to_emoji(tries, nb_try, challenge, time):
+
+def to_emoji(tries, nb_try, challenge, time, user):
     str_emoji = ""
-    clipboard = "SATOM N°" + str(challenge) + "\\n\\n"
+    clipboard = "SATOM N°" + str(challenge) + " - " + str(user) +"\\n\\n"
     for i in range(nb_try):
         for j in range(len(tries[i])):
             str_emoji = str_emoji + emoji[tries[i][j]["value"]]
@@ -148,7 +149,7 @@ def challenge(request, pk):
                 session[chall_id]['ended'] = time.time()
                 session[chall_id]['time_spent'] = calcul_temps(session[chall_id]['started'], session[chall_id]['ended'])
 
-                session[chall_id]['attempts_emoji'], session[chall_id]['emoji_clipboard'] = to_emoji(session[chall_id]['attempts'], session[chall_id]['nb_try'], pk, session[chall_id]['time_spent'][0])
+                session[chall_id]['attempts_emoji'], session[chall_id]['emoji_clipboard'] = to_emoji(session[chall_id]['attempts'], session[chall_id]['nb_try'], pk, session[chall_id]['time_spent'][0], request.user)
 
                 request.user.profile.completedChall.add(curr_challenge)
                 request.user.profile.challenges.append([pk, session[chall_id]['time_spent'], session[chall_id]['nb_try']])
