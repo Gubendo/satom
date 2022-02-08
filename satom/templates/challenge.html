@@ -22,12 +22,13 @@
 
 {% if completed %}
 <h1> Vous avez déjà résolu le mot n°{{ challenge.pk }}</h1>
+<div class = "row"></div>
     {% if lastWord == False %}
     <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn">Mot suivant</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
     {% endif %}
-    <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
-
+    <button onclick="https://1mot.net/{{challenge.word}}" class="btn">Définition du mot</button>
+</div>
 {% endif %}
 <br>
 {% if state == "win" %}
