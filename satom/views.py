@@ -39,7 +39,7 @@ def calcul_temps(started, ended):
     temps = ""
     diff = int(ended - started)
     if diff / 3600 >= 1:
-        temps = "+ d'1 heure tu es nul"
+        temps = "+ d'1 heure"
     elif diff / 60 >= 1:
         minute = diff // 60
         sec = diff % 60
