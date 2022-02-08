@@ -99,12 +99,21 @@ def motus(guess, word, a_list):
 def home(request):
     buttons = []
     challenges = Challenge.objects.all().order_by('id')
+    unite = 0
+    dizaine = -1
     for chall in challenges:
+        if unite % 11 == 0:
+            dizaine +=1
+            buttons.append([])
+            unite = 1
         if chall in request.user.profile.completedChall.all():
-            buttons.append([chall.pk, "done"])
+            buttons[dizaine].append([chall.pk, "done"])
         else:
-            buttons.append([chall.pk, "nodone"])
+            buttons[dizaine].append([chall.pk, "nodone"])
 
+        unite += 1
+
+    print(buttons)
     context = {
         "challenges": challenges,
         "buttons": buttons,
@@ -119,6 +128,12 @@ def challenge(request, pk):
     global emoji_clipboard
 
     curr_challenge = Challenge.objects.get(pk=pk)
+    daily_challenge = Challenge.objects.all().latest('pk')
+    if curr_challenge == daily_challenge:
+        lastWord = True
+    else:
+        lastWord = False
+
     chall_id = "challenge" + str(pk)
     word = curr_challenge.word
     longueur = len(word)
@@ -211,6 +226,7 @@ def challenge(request, pk):
         "clipboard": session[chall_id]['emoji_clipboard'],
         "time_spent": session[chall_id]['time_spent'][0],
         "completed": completed,
+        "lastWord": lastWord,
     }
     return render(request, 'challenge.html', context)
 

@@ -29,9 +29,13 @@
 {% if state == "win" %}
 <h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} en {{ time_spent }}</h1>
 <div class = "row">
+    {% if lastWord == False %}
+    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn">Mot suivant</button>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    {% endif %}
     <button onclick="myFunction()" class="btn">Partager votre score</button>
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <h3><a href="https://1mot.net/{{challenge.word}}">Définition du mot</a></h3>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <button onclick="https://1mot.net/{{challenge.word}}" class="btn">Définition du mot</button>
     </div>
 <br>
 
