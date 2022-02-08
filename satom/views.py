@@ -217,6 +217,7 @@ def challenge(request, pk):
 def classement(request):
     scores = []
     users = Profile.objects.all().annotate(score=Count('completedChall')).order_by('-score')
+    rank = 1
 
     for user in users:
         words = user.challenges
@@ -228,7 +229,17 @@ def classement(request):
         avg_time = calcul_stats(time_list)
         avg_try = calcul_stats(try_list)
 
-        scores.append([user, user.score, avg_try, avg_time])
+        if rank == 1:
+            name = "🏆 " + str(user)
+        elif rank == 2:
+            name = "🥈 " + str(user)
+        elif rank == 3:
+            name = "🥉 " + str(user)
+        else:
+            name = "" + str(rank) + " - " + str(user)
+
+        scores.append([name, user.score, avg_try, avg_time])
+        rank+=1
     context = {
         "users": scores,
     }
