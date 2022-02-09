@@ -70,17 +70,24 @@ def calcul_stats(full_list):
         avg = total / long
     return round(avg, 2)
 
-def motus(guess, word, a_list):
+def motus(guess, word, a_list, lettres):
 
     longueur = len(word)
     word_list = list(word)
     guess_list = list(guess)
     result_list = ["false"] * longueur
 
+
     for i in range(longueur):
         if guess_list[i] == word_list[i]:
             result_list[i] = "correct"
             a_list[i] = guess[i]
+
+            # couleur verte pour lettres[i] == guess_list[i]
+            for row in lettres:
+                for lettre in row:
+                    if lettre['letter'].lower() == guess_list[i]:
+                        lettre['color'] = "#00A000"
 
             guess_list[i] = "+"
             word_list[i] = "-"
@@ -90,10 +97,24 @@ def motus(guess, word, a_list):
             if guess_list[i] == word_list[j]:
                 result_list[i] = "partial"
 
+                # couleur jaune pour lettres[i] == guess_list[i]
+                for row in lettres:
+                    for lettre in row:
+                        if lettre['letter'].lower() == guess_list[i] and lettre['color'] != "#00A000":
+                            lettre['color'] = "#FF9600"
+
                 guess_list[i] = "+"
                 word_list[j] = "-"
 
-    return result_list, a_list
+    for i in range(longueur):
+        if guess_list[i] != "+":
+            # couleur rouge pour lettres[i] = guess_list[i]
+            for row in lettres:
+                for lettre in row:
+                    if lettre['letter'].lower() == guess_list[i] and lettre['color'] != "#00A000" and lettre['color'] != "#FF9600":
+                        lettre['color'] = "#B1B1B1"
+
+    return result_list, a_list, lettres
 
 @login_required()
 def home(request):
@@ -147,7 +168,7 @@ def challenge(request, pk):
         if session[chall_id]['nb_try'] < 6 and session[chall_id]['state'] == "guess":
 
             session[chall_id]['guess'] = str(request.GET.get('guess')).lower()
-            session[chall_id]['result'], session[chall_id]['answer_list'] = motus(session[chall_id]['guess'], word, session[chall_id]['answer_list'])
+            session[chall_id]['result'], session[chall_id]['answer_list'], session[chall_id]['lettres'] = motus(session[chall_id]['guess'], word, session[chall_id]['answer_list'], session[chall_id]['lettres'])
 
             session[chall_id]['guess_list'] = list(session[chall_id]['guess'].upper())
 
@@ -191,6 +212,9 @@ def challenge(request, pk):
         session[chall_id]['emoji_clipboard'] = ""
         session[chall_id]['started'] = time.time()
         session[chall_id]['time_spent'] = ["", 0]
+        session[chall_id]['lettres'] = [[{"letter":'A', "color": "#000000"}, {"letter":'Z', "color": "#000000"}, {"letter":'E', "color": "#000000"}, {"letter":'R', "color": "#000000"}, {"letter":'T', "color": "#000000"}, {"letter":'Y', "color": "#000000"}, {"letter":'U', "color": "#000000"}, {"letter":'I', "color": "#000000"}, {"letter":'O', "color": "#000000"}, {"letter":'P', "color": "#000000"}],
+                                        [{"letter":'Q', "color": "#000000"}, {"letter":'S', "color": "#000000"}, {"letter":'D', "color": "#000000"}, {"letter":'F', "color": "#000000"}, {"letter":'G', "color": "#000000"}, {"letter":'H', "color": "#000000"}, {"letter":'J', "color": "#000000"}, {"letter":'K', "color": "#000000"}, {"letter":'L', "color": "#000000"}, {"letter":'M', "color": "#000000"}],
+                                        [{"letter":'W', "color": "#000000"}, {"letter":'X', "color": "#000000"}, {"letter":'C', "color": "#000000"}, {"letter":'V', "color": "#000000"}, {"letter":'B', "color": "#000000"}, {"letter":'N', "color": "#000000"}]]
 
         for i in range(6):
             session[chall_id]['attempt'] = []
@@ -225,8 +249,9 @@ def challenge(request, pk):
         "emoji": session[chall_id]['attempts_emoji'],
         "clipboard": session[chall_id]['emoji_clipboard'],
         "time_spent": session[chall_id]['time_spent'][0],
-        "completed": completed,
+        "alreadyCompleted": completed,
         "lastWord": lastWord,
+        "lettresDispo": session[chall_id]['lettres']
     }
     return render(request, 'challenge.html', context)
 

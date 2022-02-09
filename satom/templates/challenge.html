@@ -18,18 +18,7 @@
   {% endfor %}
 </div>
 
-    <br>
 
-{% if completed %}
-<h1> Vous avez déjà résolu le mot n°{{ challenge.pk }}</h1>
-<div class = "row">
-    {% if lastWord == False %}
-    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn">Mot suivant</button>
-    &nbsp; &nbsp; &nbsp; &nbsp;
-    {% endif %}
-    <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
-</div>
-{% endif %}
 <br>
 {% if state == "win" %}
 <h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} en {{ time_spent }}</h1>
@@ -43,11 +32,10 @@
     <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
     </div>
 <br>
-
 {% elif state == "lose" %}
 <h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.pk }} et vous n'aurez pas la solution 😈</h1>
 
-{% elif completed == False %}
+{% elif alreadyCompleted == False %}
 <form action="" method="GET">
         {% csrf_token %}
         <div class="form-group">
@@ -59,7 +47,30 @@
     <br>
 
 </form>
+<br>
+{% for row in lettresDispo %}
+<div class="row justify-content-center">
+{% for lettre in row %}
+    <h2>
+        &nbsp; <font color="{{lettre.color}}"><strong>{{ lettre.letter }}</strong></font>
+        </h2>
+{% endfor %}
+</div>
+<br>
+
+{% endfor %}
+{% else %}
+
+<h1> Vous avez déjà résolu le mot n°{{ challenge.pk }}</h1>
+<div class = "row">
+    {% if lastWord == False %}
+    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn">Mot suivant</button>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    {% endif %}
+    <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
+</div>
 {% endif %}
+
 
     <br>
 <script>
