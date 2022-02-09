@@ -163,7 +163,6 @@ def challenge(request, pk):
     completed = False
 
 
-
     if request.GET.get('guess'):
         if session[chall_id]['nb_try'] < 6 and session[chall_id]['state'] == "guess":
 
@@ -227,6 +226,20 @@ def challenge(request, pk):
         session[chall_id]['attempts'][nb_try][0]["value"] = "correct"
         session[chall_id]['attempts'][nb_try][0]["color"] = colors["correct"]
 
+    elif not ('lettres' in session[chall_id].keys()):
+        session[chall_id]['lettres'] = [[{"letter": 'A', "color": "#000000"}, {"letter": 'Z', "color": "#000000"},
+                                         {"letter": 'E', "color": "#000000"}, {"letter": 'R', "color": "#000000"},
+                                         {"letter": 'T', "color": "#000000"}, {"letter": 'Y', "color": "#000000"},
+                                         {"letter": 'U', "color": "#000000"}, {"letter": 'I', "color": "#000000"},
+                                         {"letter": 'O', "color": "#000000"}, {"letter": 'P', "color": "#000000"}],
+                                        [{"letter": 'Q', "color": "#000000"}, {"letter": 'S', "color": "#000000"},
+                                         {"letter": 'D', "color": "#000000"}, {"letter": 'F', "color": "#000000"},
+                                         {"letter": 'G', "color": "#000000"}, {"letter": 'H', "color": "#000000"},
+                                         {"letter": 'J', "color": "#000000"}, {"letter": 'K', "color": "#000000"},
+                                         {"letter": 'L', "color": "#000000"}, {"letter": 'M', "color": "#000000"}],
+                                        [{"letter": 'W', "color": "#000000"}, {"letter": 'X', "color": "#000000"},
+                                         {"letter": 'C', "color": "#000000"}, {"letter": 'V', "color": "#000000"},
+                                         {"letter": 'B', "color": "#000000"}, {"letter": 'N', "color": "#000000"}]]
 
     if curr_challenge in request.user.profile.completedChall.all() and session[chall_id]["state"] == "guess":
         completed = True
