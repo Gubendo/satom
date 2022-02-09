@@ -48,6 +48,7 @@
 
 </form>
 <br>
+<div class="col-5">
 {% for row in lettresDispo %}
 <div class="row justify-content-center">
 {% for lettre in row %}
@@ -59,6 +60,7 @@
 <br>
 
 {% endfor %}
+    </div>
 {% else %}
 
 <h1> Vous avez déjà résolu le mot n°{{ challenge.pk }}</h1>
