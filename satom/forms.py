@@ -9,6 +9,7 @@ class GuessForm(forms.Form):
             "maxlength": 50,
             "minlength": 0,
             "autocomplete": "off",
+            "autofocus": "on",
         })
     )
 
