@@ -123,7 +123,7 @@ def home(request):
     unite = 0
     dizaine = -1
     for chall in challenges:
-        if unite % 11 == 0:
+        if unite % 7 == 0:
             dizaine +=1
             buttons.append([])
             unite = 1
@@ -134,7 +134,6 @@ def home(request):
 
         unite += 1
 
-    print(buttons)
     context = {
         "challenges": challenges,
         "buttons": buttons,

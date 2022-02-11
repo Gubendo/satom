@@ -3,6 +3,7 @@
 
 {% block page_content %}
 <title>Classement</title>
+<div class="container" >
 <div class="row"><h1> Classement des utilisateurs </h1></div>
 <br>
 {% for user in users %}
@@ -10,4 +11,5 @@
           <p><strong>{{ user.0 }} : </strong>{{ user.1 }} mots complétés, {{ user.2 }} essais moyens, {{ user.3 }} secondes en moyenne</p>
           </div>
       {% endfor %}
+</div>
 {% endblock %}

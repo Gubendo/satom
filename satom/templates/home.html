@@ -6,16 +6,17 @@
 {% block page_content %}
 <title>Jeu du Satom</title>
 <h1>Bienvenue sur le jeu du satom !!</h1> <br>
-<div class="container">
+
 <h2>Choisissez un mot :</h2>
 <br>
+<div class="container" >
 {% for dizaine in buttons %}
-<div class="row">
+<div class="row" >
 {% for button in dizaine %}
     {% if button.1 == "done" %}
-        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary done-btn">{{ button.0 }}</a> &nbsp; &nbsp;
+        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary done-btn" style="width: 5vh">{{ button.0 }}</a> &nbsp; &nbsp;
     {% else %}
-        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary">{{ button.0 }}</a> &nbsp; &nbsp;
+        <a href="{% url 'challenge' button.0 %}" class="btn btn-primary" style="width: 5vh">{{ button.0 }}</a> &nbsp; &nbsp;
     {% endif %}
 
 {% endfor %}

@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block page_content %}
 <title>Satom n°{{challenge.pk}}</title>
@@ -8,28 +9,28 @@
 <div class="container">
 
   {% for attempt in attempts %}
-    <div class="row">
+    <div class="row" style="width: 60vw">
   {% for letter in attempt %}
-      <div class="col-md-1 ">
-          <font color="{{letter.color}}"><strong><p>{{ letter.letter }}</p></strong></font>
-          </div>
+            <div class="col-1" align="center">
+          <h8><font color="{{letter.color}}" ><strong><p>{{ letter.letter }}</p></strong></font></h8>
+            </div>
       {% endfor %}
     </div>
   {% endfor %}
-</div>
+
 
 
 <br>
 {% if state == "win" %}
 <h1> Félicitations, vous avez deviné le mot n°{{ challenge.pk }} en {{ time_spent }}</h1>
-<div class = "row">
+<div class = "row" style="width: 100vw">
     {% if lastWord == False %}
-    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn">Mot suivant</button>
+    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn" style="width: 20vh">Mot suivant</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
     {% endif %}
-    <button onclick="myFunction()" class="btn">Partager votre score</button>
+    <button onclick="myFunction()" class="btn" style="width: 20vh">Partager votre score</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
+    <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn" style="width: 20vh">Définition du mot</button>
     </div>
 <br>
 {% elif state == "lose" %}
@@ -48,13 +49,14 @@
 
 </form>
 <br>
-<div class="col-6">
+<div style="width:40vh" >
 {% for row in lettresDispo %}
+
 <div class="row justify-content-center">
 {% for lettre in row %}
-    <h3>
+    <h9>
         &nbsp; <font color="{{lettre.color}}"><strong>{{ lettre.letter }}</strong></font>
-        </h3>
+        </h9>
 {% endfor %}
 </div>
 <br>
@@ -72,7 +74,7 @@
     <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
 </div>
 {% endif %}
-
+</div>
 
     <br>
 <script>
