@@ -123,7 +123,7 @@ def home(request):
     unite = 0
     dizaine = -1
     for chall in challenges:
-        if unite % 7 == 0:
+        if unite % 8 == 0:
             dizaine +=1
             buttons.append([])
             unite = 1
