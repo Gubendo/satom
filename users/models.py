@@ -20,3 +20,14 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class Roi(models.Model):
+    king = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    challengeID = models.IntegerField(default=1)
+    time = models.IntegerField(default=0)
+    tries = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return "roi" + str(self.king)

@@ -3,9 +3,33 @@
 {% block page_content %}
 <title>Thomas Gubeno</title>
 <body>
-<h1>Bienvenue sur mon site :)</h1>
 <br>
 {% load static %}
-<a href="satom/{{daily}}"><img src={% static "peepoTh.png" %} alt="peepoG" style="height: 40vh"/></a> &nbsp; &nbsp; &nbsp; <( Merci à vous de soutenir le SATOM ! ❤️  )
+<a href="satom/{{daily}}"><img src={% static "peepoTh.png" %} alt="peepoG" style="height: 30vh"/></a> &nbsp; &nbsp; &nbsp; <( Merci à vous de soutenir le SATOM ! ❤️  )
+
+<br>
+<br>
+<br>
+<br>
+<h2>Félicitations au roi du SATOM du jour : <br/>
+    {{ roi.king }} a terminé le mot n° {{ roi.challengeID}} en {{ roi.time }} secondes ! ({{ roi.tries }} essais)</h2>
+
+{% if roi.king.user.username == "ManonCuisson" %}
+
+<img src={% static "peepoM.png" %} alt="peepoF" style="height: 20vh"/>
+
+{% elif roi.king.user.username == "Gubourdon" %}
+
+<img src={% static "peepoL.png" %} alt="peepoL" style="height: 20vh"/>
+
+{% elif roi.king.user.username == "Fannouille" %}
+
+<img src={% static "peepoF2.png" %} alt="peepoF2" style="height: 20vh"/>
+
+{% else %}
+
+<img src={% static "peepoR2.png" %} alt="peepoR2" style="height: 20vh"/>
+
+{% endif %}
 </body>
 {% endblock %}

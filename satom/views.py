@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from satom.models import Challenge
 from django.db.models import Count
-from users.models import Profile
+from users.models import Profile, Roi
 from satom.forms import GuessForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -32,7 +32,6 @@ def to_emoji(tries, nb_try, challenge, time, user):
         clipboard = clipboard + "\\nRéussi en 1 coup et en " + time + " ! OMG"
     else:
         clipboard = clipboard + "\\nRéussi en " + str(nb_try) + " coups  et en " + time + "!"
-    print(str_emoji)
     return str_emoji, clipboard
 
 def calcul_temps(started, ended):
@@ -69,6 +68,13 @@ def calcul_stats(full_list):
 
         avg = total / long
     return round(avg, 2)
+
+def updateKing(king, chall_id, time):
+    if chall_id > king.challengeID:
+        return True
+    if time < king.time:
+        return True
+    return False
 
 def motus(guess, word, a_list, lettres):
 
@@ -188,6 +194,16 @@ def challenge(request, pk):
                 request.user.profile.completedChall.add(curr_challenge)
                 request.user.profile.challenges.append([pk, session[chall_id]['time_spent'], session[chall_id]['nb_try']])
                 request.user.profile.save()
+
+                current_king = Roi.objects.all().latest('pk')
+                new_king = updateKing(current_king, pk, session[chall_id]['time_spent'][1])
+                if new_king :
+                    current_king.king = request.user.profile
+                    current_king.challengeID = pk
+                    current_king.time = session[chall_id]['time_spent'][1]
+                    current_king.tries = session[chall_id]['nb_try']
+                    current_king.save()
+
 
             elif session[chall_id]['nb_try'] < 6:
                 for j in range(longueur):
