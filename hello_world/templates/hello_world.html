@@ -5,7 +5,7 @@
 <body>
 <br>
 {% load static %}
-<a href="satom/{{daily}}"><img src={% static "peepoTh.png" %} alt="peepoG" style="height: 30vh"/></a> &nbsp; &nbsp; &nbsp; <( Merci à vous de soutenir le SATOM ! ❤️  )
+<a href="satom/{{daily}}"><img src={% static "peepoTh.png" %} alt="peepoG" style="width: 30vh"/></a> &nbsp; &nbsp; &nbsp; <( Merci à vous de soutenir le SATOM ! ❤️  )
 
 <br>
 <br>
@@ -16,19 +16,19 @@
 
 {% if roi.king.user.username == "ManonCuisson" %}
 
-<img src={% static "peepoM.png" %} alt="peepoF" style="height: 20vh"/>
+<img src={% static "peepoM.png" %} alt="peepoF" style="width: 20vh"/>
 
 {% elif roi.king.user.username == "Gubourdon" %}
 
-<img src={% static "peepoL.png" %} alt="peepoL" style="height: 20vh"/>
+<img src={% static "peepoL.png" %} alt="peepoL" style="width: 20vh"/>
 
 {% elif roi.king.user.username == "Fannouille" %}
 
-<img src={% static "peepoF2.png" %} alt="peepoF2" style="height: 20vh"/>
+<img src={% static "peepoF2.png" %} alt="peepoF2" style="width: 20vh"/>
 
 {% else %}
 
-<img src={% static "peepoR2.png" %} alt="peepoR2" style="height: 20vh"/>
+<img src={% static "peepoR2.png" %} alt="peepoR2" style="width: 20vh"/>
 
 {% endif %}
 </body>

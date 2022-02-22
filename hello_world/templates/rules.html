@@ -1,11 +1,51 @@
 {% extends "base.html" %}
 {% block page_content %}
+<title>Règles du jeu</title>
+{% load static %}
 <body>
 <h1>Règles du jeu du SATOM :</h1>
 <br>
+En arrivant sur le site web, vous avez le choix entre cliquer sur le peepo de Thomas (avec sa feuille et son crayon)
+pour accéder au challenge du jour, ou vous rendre dans l'onglet "Satom" pour avoir accès à la liste des challenges
+disponibles (les challenges déja complétés seront indiqués en vert)
 <br>
 <br>
-<h4>En cours d'écriture...</h4>
+<img src={% static "home.png" %} alt="home" style="width: 40vh"/>
+<br>
+<br>
+Après avoir sélectionné un challenge, vous aurez accès à une interface composée d'un mot partiellement rempli
+ainsi que sa longueur, d'une grille de lettres initialement vide, d'un champ de texte que vous pourrez remplir pour proposer
+un mot, et d'un clavier visuel permettant de connaître les lettres disponibles.
+<br>
+<br>
+<img src={% static "interface.png" %} alt="interface" style="width: 40vh"/>
+<br>
+<br>
+Lorsque vous utilisez le champ de texte pour proposer un mot de longueur valable, ce dernier s'affichera sur la grille,
+et ses lettres respecteront un code couleur précis : Les lettres vertes correspondent aux lettres bien placées dans le
+mot-réponse, les lettres orangées correspondent aux lettres présentes dans le mot-réponse mais mal placées, et les lettres
+noires correspondent aux lettres non présentes dans le mot réponse. Vous remarquerez que ce code couleur s'applique
+également sur le clavier virtuel présent sous le champ de texte (les lettres non correctes du clavier deviennent grises).
+<br>
+<br>
+<img src={% static "try1.png" %} alt="try1" style="width: 40vh"/>
+<br>
+<br>
+Après plusieurs essais, et en vous servant du code couleur de vos différentes propositions, vous serez en mesure de deviner
+le mot réponse. Dans le cas échéant, le champ de texte sera remplacé par un message vous félicitant, et plusieurs boutons
+permettant de passer au mot suivant, partager votre score et chercher la définition du mot-réponse sur Internet.
+<br>
+<br>
+<img src={% static "try3.png" %} alt="try3" style="width: 40vh"/>
+<br>
+<br>
+Si vous êtes performants et que vous résolvez le challenge du jour le plus rapidement parmi tous les utilisateurs, vous
+serez nommé "Roi du SATOM du jour" et figurerez sur la page d'accueil, alors à vos claviers !
+<br>
+<br>
+<img src={% static "king.png" %} alt="king" style="width: 40vh"/>
+
+
 
 </body>
 {% endblock %}
