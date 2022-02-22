@@ -283,8 +283,13 @@ def challenge(request, pk):
     }
     return render(request, 'challenge.html', context)
 
+
+def get_note(users):
+    return users.get('note')
+
 def classement(request):
     scores = []
+    notes = []
     users = Profile.objects.all().annotate(score=Count('completedChall')).order_by('-score')
     rank = 1
 
@@ -295,8 +300,27 @@ def classement(request):
         for word in words:
             time_list.append(word[1][1])
             try_list.append(word[2])
+
         avg_time = calcul_stats(time_list)
         avg_try = calcul_stats(try_list)
+
+        if avg_time != 0 and avg_try != 0:
+            grade_time = 20 - ((avg_time - 60) * 20 / 840)
+            if grade_time <=0: grade_time = 0
+            grade_tries = 20 - ((avg_try - 1) * 20 / 6)
+        else:
+            grade_time = 0
+            grade_tries = 0
+
+        avg_grade = (grade_time + grade_tries) / 2
+        notes.append({'name': user, 'note': avg_grade + 20*user.score, 'time': avg_time, 'tries': avg_try})
+
+    notes.sort(key=get_note, reverse=True)
+
+    for note in notes:
+        user = note['name']
+        avg_try = note['tries']
+        avg_time = note['time']
 
         if rank == 1:
             name = "🏆 " + str(user)
@@ -309,6 +333,7 @@ def classement(request):
 
         scores.append([name, user.score, avg_try, avg_time])
         rank+=1
+
     context = {
         "users": scores,
     }
