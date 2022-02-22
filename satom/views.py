@@ -305,14 +305,14 @@ def classement(request):
         avg_try = calcul_stats(try_list)
 
         if avg_time != 0 and avg_try != 0:
-            grade_time = 20 - ((avg_time - 60) * 20 / 840)
+            grade_time = (20 - ((avg_time - 60) * 20 / 840)) * 3
             if grade_time <=0: grade_time = 0
-            grade_tries = 20 - ((avg_try - 1) * 20 / 6)
+            grade_tries = (20 - ((avg_try - 1) * 20 / 6)) * 2
         else:
             grade_time = 0
             grade_tries = 0
 
-        avg_grade = (grade_time + grade_tries) / 2
+        avg_grade = (grade_time + grade_tries) / 5
         notes.append({'name': user, 'note': avg_grade + 20*user.score, 'time': avg_time, 'tries': avg_try})
 
     notes.sort(key=get_note, reverse=True)
