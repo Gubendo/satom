@@ -69,10 +69,10 @@ def calcul_stats(full_list):
         avg = total / long
     return round(avg, 2)
 
-def updateKing(king, chall_id, time):
+def updateKing(king, chall_id, timeS):
     if chall_id > king.challengeID:
         return True
-    if time < king.time:
+    if timeS < king.time:
         return True
     return False
 
@@ -198,6 +198,9 @@ def challenge(request, pk):
                 current_king = Roi.objects.all().latest('pk')
                 new_king = updateKing(current_king, pk, session[chall_id]['time_spent'][1])
                 if new_king :
+                    print("Update king : " + str(current_king.king), " -> " + str(request.user.profile))
+                    print(str(current_king.challengeID) + " -> " + str(pk))
+                    print(str(current_king.time) + " -> " + str(session[chall_id]['time_spent'][1]))
                     current_king.king = request.user.profile
                     current_king.challengeID = pk
                     current_king.time = session[chall_id]['time_spent'][1]
