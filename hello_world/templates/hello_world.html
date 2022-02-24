@@ -26,8 +26,12 @@ Vous êtes un nouvel utilisateur ? Consultez les <a href="rules">règles du SATO
 
 {% elif roi.king.user.username == "Fannouille" %}
 
-<img src={% static "peepoF2.png" %} alt="peepoF2" style="width: 20vh"/>
+<img src={% static "peepoF2.png" %} alt="peepoF" style="width: 20vh"/>
 
+{% elif roi.king.user.username == "cluster._." %}
+
+<img src={% static "peepoC.png" %} alt="peepoC" style="width: 20vh"/>
+    
 {% else %}
 
 <img src={% static "peepoR2.png" %} alt="peepoR2" style="width: 20vh"/>
