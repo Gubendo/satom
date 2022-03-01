@@ -9,7 +9,7 @@
 <div class="container">
 
   {% for attempt in attempts %}
-    <div class="row" style="width: 60vw">
+    <div class="row" style="width: 70vw">
   {% for letter in attempt %}
             <div class="col-1" align="center">
           <h8><font color="{{letter.color}}" ><strong><p>{{ letter.letter }}</p></strong></font></h8>
@@ -17,6 +17,7 @@
       {% endfor %}
     </div>
   {% endfor %}
+
 
 
 
