@@ -26,8 +26,8 @@ def calcul_temps(diff):
     return temps
 
 def hello_world(request):
-    daily_chall = Challenge.objects.all().latest('pk')
-    daily_pk = daily_chall.pk
+    daily_chall = Challenge.objects.all().latest('number')
+    daily_pk = daily_chall.number
 
     king = Roi.objects.all().latest('pk')
     time = calcul_temps(king.time)

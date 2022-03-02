@@ -134,9 +134,9 @@ def home(request):
             buttons.append([])
             unite = 1
         if chall in request.user.profile.completedChall.all():
-            buttons[dizaine].append([chall.pk, "done"])
+            buttons[dizaine].append([chall.number, "done"])
         else:
-            buttons[dizaine].append([chall.pk, "nodone"])
+            buttons[dizaine].append([chall.number, "nodone"])
 
         unite += 1
 
@@ -153,8 +153,8 @@ def challenge(request, pk):
     global attempts_emoji
     global emoji_clipboard
 
-    curr_challenge = Challenge.objects.get(pk=pk)
-    daily_challenge = Challenge.objects.all().latest('pk')
+    curr_challenge = Challenge.objects.get(number=pk)
+    daily_challenge = Challenge.objects.all().latest('number')
     if curr_challenge == daily_challenge:
         lastWord = True
     else:
