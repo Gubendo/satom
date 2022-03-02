@@ -1,8 +1,8 @@
 
 {% extends "base.html" %}
 {% block page_content %}
-<title>Satom n°{{challenge.word}}</title>
-<h1>Mot n°{{ challenge.word }} : {{answer}} </h1> {{linebreaks}}
+<title>Satom n°{{challenge.number}}</title>
+<h1>Mot n°{{ challenge.number }} : {{answer}} </h1> {{linebreaks}}
 <h2>Longueur du mot : {{longueur}} lettres</h2>
 <br>
 
@@ -23,7 +23,7 @@
 
 <br>
 {% if state == "win" %}
-<h1> Félicitations, vous avez deviné le mot n°{{ challenge.word }} en {{ time_spent }}</h1>
+<h1> Félicitations, vous avez deviné le mot n°{{ challenge.number }} en {{ time_spent }}</h1>
 <div class = "row" style="width: 100vw">
     {% if lastWord == False %}
     <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn" style="width: 20vh">Mot suivant</button>
@@ -35,7 +35,7 @@
     </div>
 <br>
 {% elif state == "lose" %}
-<h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.word }} et vous n'aurez pas la solution 😈</h1>
+<h1> Malheureusement vous n'avez pas trouvé le mot n°{{ challenge.number }} et vous n'aurez pas la solution 😈</h1>
 
 {% elif alreadyCompleted == False %}
 <form action="" method="GET">
@@ -66,7 +66,7 @@
     </div>
 {% else %}
 
-<h1> Vous avez déjà résolu le mot n°{{ challenge.word }}</h1>
+<h1> Vous avez déjà résolu le mot n°{{ challenge.number }}</h1>
 <div class = "row">
     {% if lastWord == False %}
     <button onclick="location.href='../{{ challenge.word|add:'1'  }}'" class="btn">Mot suivant</button>
