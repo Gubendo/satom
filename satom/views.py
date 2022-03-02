@@ -125,7 +125,7 @@ def motus(guess, word, a_list, lettres):
 @login_required()
 def home(request):
     buttons = []
-    challenges = Challenge.objects.all().order_by('id')
+    challenges = Challenge.objects.all().order_by('number')
     unite = 0
     dizaine = -1
     for chall in challenges:
