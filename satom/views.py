@@ -312,7 +312,7 @@ def classement(request):
             time_list.append(word[1][1])
             try_list.append(word[2])
 
-        avg_time = calcul_stats_median(time_list)
+        avg_time = calcul_stats(time_list)
         avg_try = calcul_stats(try_list)
 
         if avg_time != 0 and avg_try != 0:
