@@ -69,6 +69,17 @@ def calcul_stats(full_list):
         avg = total / long
     return round(avg, 2)
 
+def calcul_stats_median(full_list):
+    full_list = sorted(full_list)
+    long = len(full_list)
+    if long < 1:
+        avg = 0
+    elif long % 2 == 0:
+        avg = (full_list[int((long-1)/2)] + full_list[int((long+1)/2)] ) / 2
+    else:
+        avg = full_list[int((long - 1)/2)]
+    return round(avg, 2)
+
 def updateKing(king, chall_id, timeS):
     if chall_id > king.challengeID:
         return True
@@ -301,7 +312,7 @@ def classement(request):
             time_list.append(word[1][1])
             try_list.append(word[2])
 
-        avg_time = calcul_stats(time_list)
+        avg_time = calcul_stats_median(time_list)
         avg_try = calcul_stats(try_list)
 
         if avg_time != 0 and avg_try != 0:
