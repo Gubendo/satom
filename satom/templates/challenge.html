@@ -26,7 +26,7 @@
 <h1> Félicitations, vous avez deviné le mot n°{{ challenge.number }} en {{ time_spent }}</h1>
 <div class = "row" style="width: 100vw">
     {% if lastWord == False %}
-    <button onclick="location.href='../{{ challenge.pk|add:'1'  }}'" class="btn" style="width: 20vh">Mot suivant</button>
+    <button onclick="location.href='../{{ challenge.number|add:'1'  }}'" class="btn" style="width: 20vh">Mot suivant</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
     {% endif %}
     <button onclick="myFunction()" class="btn" style="width: 20vh">Partager votre score</button>
@@ -69,7 +69,7 @@
 <h1> Vous avez déjà résolu le mot n°{{ challenge.number }}</h1>
 <div class = "row">
     {% if lastWord == False %}
-    <button onclick="location.href='../{{ challenge.word|add:'1'  }}'" class="btn">Mot suivant</button>
+    <button onclick="location.href='../{{ challenge.number|add:'1'  }}'" class="btn">Mot suivant</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
     {% endif %}
     <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
