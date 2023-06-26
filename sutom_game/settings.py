@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [os.getenv("DJANGO_ALLOWED_HOSTS"), "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [os.getenv("DJANGO_ALLOWED_HOSTS"), "gubendo.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
@@ -84,6 +84,7 @@ SESSION_SAVE_EVERY_REQUEST=True
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+'''
 if DEVELOPMENT_MODE is True:
     DATABASES = {
         "default": {
@@ -96,6 +97,13 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
+'''
+DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
 
 
