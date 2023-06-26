@@ -52,3 +52,5 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect(reverse("dashboard"))
+        else:
+            return render(request, "users/error.html")
