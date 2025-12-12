@@ -8,9 +8,9 @@
 <h1>Bienvenue sur le jeu du satom !!</h1> <br>
 
 {% if latest.1 == "done" %}
-    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary done-btn" style="width: 15vh">Mot du jour</a><br>&nbsp;
+    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary done-btn" style="width: 20vh">Mot du jour</a><br>&nbsp;
 {% else %}
-    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary" style="width: 15vh">Mot du jour</a><br>&nbsp;
+    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary" style="width: 20vh">Mot du jour</a><br>&nbsp;
 {% endif %}
 
 <u><h2>Historique des mots</h2></u>
