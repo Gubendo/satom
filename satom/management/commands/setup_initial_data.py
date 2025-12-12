@@ -14,7 +14,6 @@ class Command(BaseCommand):
         self.create_superuser()
         self.import_mots()
         self.create_initial_challenge()
-        self.create_initial_king()
         self.stdout.write(self.style.SUCCESS("✅ Initial data setup completed."))
 
     def create_superuser(self):
