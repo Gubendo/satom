@@ -15,7 +15,7 @@ ENV = env("ENV", default="local")
 DEBUG = env.bool("DEBUG", default=False)
 
 # Secret key
-SECRET_KEY = env("DJANGO_SECRET_KEY", default=get_random_secret_key())
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="super-secret-key")
 
 # Allowed hosts
 # Récupère la variable d'env séparée par des virgules, ou fallback à hosts connus
