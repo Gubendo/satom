@@ -39,12 +39,12 @@ class Command(BaseCommand):
                 if not line:
                     continue
                 # La ligne peut contenir le mot et éventuellement sa difficulté, séparés par une virgule
-                parts = line.split(",")
+                parts = line.split(";")
                 mot = parts[0].strip().lower()
-                difficulte = parts[1].strip() if len(parts) > 1 else "B"
+                difficulte = parts[1].strip() if len(parts) > 1 else "1"
                 # Evite les doublons
                 if not MotPossible.objects.filter(mot=mot).exists():
-                    MotPossible.objects.create(mot=mot, difficulte=difficulte, date_ajout=timezone.now())
+                    MotPossible.objects.create(mot=mot, difficulte=difficulte)
                     count += 1
         self.stdout.write(self.style.SUCCESS(f"{count} mots imported into MotPossible."))
 
@@ -61,6 +61,7 @@ class Command(BaseCommand):
         mot = random.choice(mot_list)
         Challenge.objects.create(
             mot=mot,
-            date_jeu=timezone.now()
+            number=0,
+            date=timezone.now()
         )
         self.stdout.write(self.style.SUCCESS(f"Initial Challenge created with word '{mot.mot}'."))
