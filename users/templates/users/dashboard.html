@@ -6,11 +6,11 @@
 <div class="row">Bonjour,&nbsp; <strong>{{ user.username|default:'Invité' }}</strong>!</div>
 
     {% if user.is_authenticated %}
-        <a href="#" onclick="document.getElementById('logout-form').submit();">Deconnexion</a>
+        <a href="#" onclick="document.getElementById('logout-form').submit();">Déconnexion</a>
         <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
             {% csrf_token %}
         </form>
-        </div>
+        <a href="{% url 'password_change' %}">Modifier le mot de passe</a> </div>
     <br>
     <div class="row"><p><strong> Historique des mots : </strong></p></div>
     {% for word in words %}
