@@ -327,9 +327,7 @@ def classement(request):
     rank = 1
 
     for user in users:
-        print(user)
-        print(user=="admin")
-        if user == "admin":
+        if str(user) == "admin":
             continue
         words = user.challenges
         time_list = []
