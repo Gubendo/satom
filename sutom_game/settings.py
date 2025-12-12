@@ -44,6 +44,13 @@ else:
         }
     }
 
+if ENV == "production":
+    CSRF_TRUSTED_ORIGINS = [
+        "https://satom-production.up.railway.app",
+    ]
+else:
+    CSRF_TRUSTED_ORIGINS = []
+    
 # Apps
 INSTALLED_APPS = [
     'users',
