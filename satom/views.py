@@ -33,7 +33,7 @@ def to_emoji(tries, nb_try, challenge, time, user):
     if nb_try == 1:
         clipboard = clipboard + "\\nRéussi en 1 coup et en " + time + " ! OMG"
     else:
-        clipboard = clipboard + "\\nRéussi en " + str(nb_try) + " coups  et en " + time + "!"
+        clipboard = clipboard + "\\nRéussi en " + str(nb_try) + " coups et en " + time + "!"
     return str_emoji, clipboard
 
 def calcul_temps(started, ended):
