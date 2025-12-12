@@ -25,6 +25,8 @@ ALLOWED_HOSTS += [
     "127.0.0.1",
     "localhost",
     "satom-production.up.railway.app",
+    "satom.app",
+    "www.satom.app"
 ]
 
 # Database
@@ -47,10 +49,12 @@ else:
 if ENV == "production":
     CSRF_TRUSTED_ORIGINS = [
         "https://satom-production.up.railway.app",
+        "https://satom.app",
+        "https://www.satom.app"
     ]
 else:
     CSRF_TRUSTED_ORIGINS = []
-    
+
 # Apps
 INSTALLED_APPS = [
     'users',
