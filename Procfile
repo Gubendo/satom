@@ -1,1 +1,1 @@
-web: gunicorn satom.wsgi
+web: gunicorn sutom_game.wsgi

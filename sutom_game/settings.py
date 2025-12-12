@@ -106,10 +106,11 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
 '''
+
 if ENV == "production":
     # Production: utilise DATABASE_URL (PostgreSQL)
     DATABASES = {
-        "default": env.db()  # ex: postgres://...
+        "default": env.db()
     }
 else:
     # Local: fallback sur SQLite
