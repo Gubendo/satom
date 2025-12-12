@@ -60,7 +60,7 @@ class Command(BaseCommand):
 
         mot = random.choice(mot_list)
         Challenge.objects.create(
-            mot=mot,
+            word=mot,
             number=0,
             date=timezone.now()
         )
