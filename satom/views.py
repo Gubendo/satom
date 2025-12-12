@@ -327,6 +327,8 @@ def classement(request):
     rank = 1
 
     for user in users:
+        if user == "admin":
+            continue
         words = user.challenges
         time_list = []
         try_list = []
@@ -346,7 +348,7 @@ def classement(request):
             grade_tries = 0
 
         avg_grade = (grade_time + grade_tries) / 5
-        notes.append({'name': user, 'note': avg_grade + 20*user.score, 'time': avg_time, 'tries': avg_try})
+        notes.append({'name': user, 'note': avg_grade + 20*user.score, 'time': int(avg_time), 'tries': avg_try})
 
     notes.sort(key=get_note, reverse=True)
 
