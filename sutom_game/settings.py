@@ -15,6 +15,12 @@ from django.core.management.utils import get_random_secret_key
 import os
 import sys
 import dj_database_url
+import environ
+
+
+env = environ.Env()
+environ.Env.read_env()
+ENV = env("ENV", default="local")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +34,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
-DEBUG = True 
+#DEBUG = True 
 
 ALLOWED_HOSTS = [os.getenv("DJANGO_ALLOWED_HOSTS"), "gubendo.pythonanywhere.com", "127.0.0.1", "localhost"]
 
@@ -100,10 +106,17 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
 '''
-DATABASES = {
+if ENV == "production":
+    # Production: utilise DATABASE_URL (PostgreSQL)
+    DATABASES = {
+        "default": env.db()  # ex: postgres://...
+    }
+else:
+    # Local: fallback sur SQLite
+    DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
@@ -149,6 +162,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Default primary key field type
