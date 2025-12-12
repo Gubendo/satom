@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from satom.models import Challenge
+from satom.models import Challenge, MotPossible
+import random
+from datetime import date
 from users.models import Roi
 
 
@@ -28,6 +30,25 @@ def calcul_temps(diff):
 def hello_world(request):
     daily_chall = Challenge.objects.all().latest('number')
     daily_pk = daily_chall.number
+
+    daily_word = Challenge.objects.filter(date=date.today()).first()
+    if not daily_word:
+        words = MotPossible.objects.filter(
+            used=False,
+            longueur__gte=5,
+            longueur__lte=7,
+            difficulte__lte=3
+        )
+        chosen_word = words.order_by('?').first()
+        if chosen_word:
+            Challenge.objects.create(
+                word=chosen_word.mot,
+                number = daily_chall.number + 1
+            )
+            daily_word.utilise = True
+            daily_word.save()
+            daily_pk = daily_word.number
+    
 
     king = Roi.objects.all().latest('pk')
     time = calcul_temps(king.time)

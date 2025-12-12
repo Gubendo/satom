@@ -1,10 +1,12 @@
-from django.shortcuts import render
-from satom.models import Challenge
+from django.shortcuts import render, redirect
+from satom.models import Challenge, MotPossible
 from django.db.models import Count
 from users.models import Profile, Roi
-from satom.forms import GuessForm
+from satom.forms import GuessForm, CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 import time
+from datetime import date
+import random
 
 
 answer_list = [] # mot ***** -> lettres révélées
@@ -151,9 +153,11 @@ def home(request):
 
         unite += 1
 
+    latest = buttons[-1][-1]
     context = {
         "challenges": challenges,
         "buttons": buttons,
+        "latest": latest
     }
     return render(request, 'home.html', context)
 
@@ -349,3 +353,15 @@ def classement(request):
         "users": scores,
     }
     return render(request, 'classement.html', context)
+
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")  # ou autre page
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, "register.html", {"form": form})
+    

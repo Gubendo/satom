@@ -4,10 +4,16 @@
 
 
 {% block page_content %}
-<title>Jeu du Satom</title>
+<title>Mots</title>
 <h1>Bienvenue sur le jeu du satom !!</h1> <br>
 
-<h2>Choisissez un mot :</h2>
+{% if latest.1 == "done" %}
+    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary done-btn" style="width: 12vh">Mot du jour</a><br>&nbsp;
+{% else %}
+    <a href="{% url 'challenge' latest.0 %}" class="btn btn-primary" style="width: 12vh">Mot du jour</a><br>&nbsp;
+{% endif %}
+
+<u><h2>Historique des mots</h2></u>
 <br>
 <div class="container" >
 {% for dizaine in buttons %}

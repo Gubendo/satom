@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
-#DEBUG = True 
+DEBUG = True 
 
 ALLOWED_HOSTS = [os.getenv("DJANGO_ALLOWED_HOSTS"), "gubendo.pythonanywhere.com", "127.0.0.1", "localhost"]
 
@@ -156,5 +156,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = "dashboard"
+LOGOUT_REDIRECT_URL = 'dashboard'
