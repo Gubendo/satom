@@ -137,8 +137,26 @@ def motus(guess, word, a_list, lettres):
 
 @login_required()
 def home(request):
-    buttons = []
     challenges = Challenge.objects.all().order_by('number')
+    daily_word = Challenge.objects.filter(date=date.today()).first()
+    if not daily_word:
+        words = MotPossible.objects.filter(
+            used=False,
+            longueur__gte=5,
+            longueur__lte=7,
+            difficulte__lte=3
+        )
+        chosen_word = words.order_by('?').first()
+        if chosen_word:
+            chosen_word.used = True
+            chosen_word.save()
+            chosen_word = Challenge.objects.create(
+                word=chosen_word.mot,
+                number = challenges.last().number + 1
+            )
+            challenges = Challenge.objects.all().order_by('number')
+            
+    buttons = []
     unite = 0
     dizaine = -1
     for chall in challenges:

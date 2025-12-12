@@ -72,7 +72,7 @@
     <button onclick="location.href='../{{ challenge.number|add:'1'  }}'" class="btn">Mot suivant</button>
     &nbsp; &nbsp; &nbsp; &nbsp;
     {% endif %}
-    <button onclick="location.href='https://1mot.net/{{challenge.word}}'" class="btn">Définition du mot</button>
+    <button onclick=" window.open('https://1mot.net/{{  challenge.word  }}','_blank')" class="btn">Définition du mot</button>
 </div>
 {% endif %}
 </div>

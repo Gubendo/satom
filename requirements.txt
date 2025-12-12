@@ -7,3 +7,4 @@ psycopg2==2.8.6
 psycopg2-binary==2.8.6
 sqlparse==0.4.2
 whitenoise==5.3.0
+django-environ

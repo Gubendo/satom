@@ -41,13 +41,13 @@ def hello_world(request):
         )
         chosen_word = words.order_by('?').first()
         if chosen_word:
-            Challenge.objects.create(
+            chosen_word.used = True
+            chosen_word.save()
+            chosen_word = Challenge.objects.create(
                 word=chosen_word.mot,
                 number = daily_chall.number + 1
             )
-            daily_word.utilise = True
-            daily_word.save()
-            daily_pk = daily_word.number
+            daily_pk = chosen_word.number
     
 
     king = Roi.objects.all().latest('pk')
