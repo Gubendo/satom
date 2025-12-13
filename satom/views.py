@@ -139,10 +139,8 @@ def motus(guess, word, a_list, lettres):
 def home(request):
     challenges = Challenge.objects.all().order_by('number')
     daily_word = Challenge.objects.filter(date=date.today()).first()
-    print("DAILY WORD :", str(daily_word))
     print(date.today())
     if not daily_word:
-        print("None")
         words = MotPossible.objects.filter(
             used=False,
             longueur__gte=5,
@@ -151,7 +149,6 @@ def home(request):
         )
         chosen_word = words.order_by('?').first()
         if chosen_word:
-            print("Chosen word")
             chosen_word.used = True
             chosen_word.save()
             chosen_word = Challenge.objects.create(
