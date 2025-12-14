@@ -28,6 +28,13 @@ def calcul_temps(diff):
     return temps
 
 def hello_world(request):
+    king_peepo = {
+        "gubeton": "peepoL",
+        "Manolette": "peepoM",
+        "Cami": "peepoC",
+        "betakakarotene": "peepoH",
+    }
+
     daily_chall = Challenge.objects.all().latest('number')
     daily_pk = daily_chall.number
 
@@ -50,11 +57,13 @@ def hello_world(request):
             daily_pk = chosen_word.number
     
 
-    king = Roi.objects.all().latest('pk')
-    time = calcul_temps(king.time)
+    roi = Roi.objects.all().latest('pk')
+    peepo_roi = king_peepo.get(roi.king.user.username, "peepoR2")
+    time = calcul_temps(roi.time)
     context = {
         "daily": daily_pk,
-        "roi": king,
+        "roi": roi,
+        "peepo_roi": peepo_roi,
         "time": time,
     }
     return render(request, 'hello_world.html', context)

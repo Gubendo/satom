@@ -16,26 +16,6 @@ Vous êtes un nouvel utilisateur ? Consultez les <a href="rules">règles du SATO
 <h2>Félicitations au roi du SATOM du jour : <br/>
     {{ roi.king }} a terminé le mot n°{{ roi.challengeID}} en {{ time }} ! ({{ roi.tries }} essais)</h2>
 
-{% if roi.king.user.username == "Manolette" %}
-
-<img src={% static "peepoM.png" %} alt="peepoF" style="width: 26vh"/>
-
-{% elif roi.king.user.username == "gubeton" %}
-
-<img src={% static "peepoL.png" %} alt="peepoL" style="width: 26vh"/>
-
-{% elif roi.king.user.username == "Cami" %}
-
-<img src={% static "peepoC.png" %} alt="peepoC" style="width: 26vh"/>
-
-{% elif roi.king.user.username == "betakakarotene" %}
-
-<img src={% static "peepoH.png" %} alt="peepoH" style="width: 26vh"/>
-    
-{% else %}
-
-<img src={% static "peepoR2.png" %} alt="peepoR2" style="width: 26vh"/>
-
-{% endif %}
+<img src="{% static '' %}{{ peepo_roi }}.png" alt="{{ peepo_roi }}" style="width: 26vh"/>
 </body>
 {% endblock %}
