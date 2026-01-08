@@ -21,4 +21,6 @@ urlpatterns = [
     path('', include('hello_world.urls')),
     path('user/', include('users.urls')),
     path('satom/', include('satom.urls')),
+    path("enclose/", include("enclose.urls")),
+    path("enclose/api/", include("enclose.api.urls")),
 ]

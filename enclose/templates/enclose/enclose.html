@@ -1,0 +1,62 @@
+{% load static %}
+
+<button id="burger-btn" class="burger">☰</button>
+
+<div id="puzzle-drawer" class="drawer">
+  <h3>Choisir un puzzle précédent</h3>
+  <ul id="puzzle-list"></ul>
+</div>
+
+<div class="enclose-page">
+
+  <header class="enclose-header">
+    <h1>Pâturage</h1>
+    <p class="subtitle">Laissez brouter le cheval avec un nombre limité de murs</p>
+    <p class="puzzle-date">Puzzle du {{ puzzle_date|date:"d/m/Y" }}</p>
+  </header>
+
+  <main class="enclose-layout">
+
+    <aside class="side-panel left">
+      <section class="leaderboard">
+      <h3>Classement</h3>
+
+      <div id="leaderboard-container">
+
+        <p id="no-score-message">
+          Aucun score pour ce puzzle
+        </p>
+
+        <ol id="classement" class="leaderboard hidden">
+          <!-- Les entrées du classement seront insérées ici dynamiquement -->
+        </ol>
+
+      </div>
+    </section>
+    </aside>
+
+    <section class="board-wrapper">
+      <canvas id="board"></canvas>
+    </section>
+
+    <aside class="side-panel right">
+      <div class="stat">Aire : <span id="area">N/A</span></div>
+      <div class="stat">Murs restants : <span id="walls-left"></span></div>
+
+      <button id="submit-btn">Valider</button>
+      <div id="feedback"></div>
+    </aside>
+
+  </main>
+
+</div>
+
+<script>
+  window.PUZZLE = {{ puzzle_json|safe }};
+  window.SAVED_WALLS = {{ saved_walls|safe }};
+  window.GAME_LOCKED = {{ locked|yesno:"true,false" }};
+  window.LEADERBOARD = {{ leaderboard_json|safe }};
+
+</script>
+<script src="{% static 'enclose/enclose.js' %}"></script>
+<link rel="stylesheet" href="{% static 'enclose/enclose.css' %}">

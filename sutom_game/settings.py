@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ENV mode
 ENV = env("ENV", default="local")
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=True)
 
 # Secret key
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="super-secret-key")
@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hello_world',
     'satom',
+    'enclose'
 ]
 
 # Middleware
