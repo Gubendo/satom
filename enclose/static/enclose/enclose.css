@@ -1,3 +1,7 @@
+html, body {
+  touch-action: pan-y;   /* scroll vertical OK */
+}
+
 .enclose-page {
   max-width: 1400px;
   margin: 0 auto;
@@ -33,6 +37,7 @@
   display: block;
   width: 100%;
   height: auto;
+  touch-action: none;
 }
 
 /* Panneaux latéraux */

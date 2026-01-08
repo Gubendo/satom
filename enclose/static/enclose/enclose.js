@@ -16,6 +16,21 @@ const PADDING = 20;
 const walls = new Set();
 let gameLocked = false;
 
+let viewScale = 1;
+let viewOffsetX = 0;
+let viewOffsetY = 0;
+
+const MIN_ZOOM = 0.6;
+const MAX_ZOOM = 3;
+
+let pointers = new Map();
+
+let pinchStartDist = null;
+let pinchStartScale = null;
+
+let lastPanX = null;
+let lastPanY = null;
+
 const submitBtn = document.getElementById("submit-btn");
 
 function findHorse() {
@@ -136,12 +151,20 @@ function drawArea() {
 }
 
 function draw() {
+  ctx.save();
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.translate(viewOffsetX, viewOffsetY);
+  ctx.scale(viewScale, viewScale);
+
   drawArea();
   drawTerrain();
   drawWalls();
   drawGrid();
   drawHorse();
+
+  ctx.restore();
 }
 
 draw();
@@ -301,6 +324,8 @@ function disableCanvasInteraction() {
 }
 
 function resizeCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+
   const wrapper = document.querySelector(".board-wrapper");
   const n = PUZZLE.size;
 
@@ -308,13 +333,15 @@ function resizeCanvas() {
 
   CELL = Math.floor(available / n);
 
-  const canvasSize = CELL * n + PADDING * 2;
+  const sizeCSS = CELL * n + PADDING * 2;
 
-  canvas.width = canvasSize;
-  canvas.height = canvasSize;
+  canvas.width = sizeCSS * ratio;
+  canvas.height = sizeCSS * ratio;
 
-  canvas.style.width = canvasSize + "px";
-  canvas.style.height = canvasSize + "px";
+  canvas.style.width = sizeCSS + "px";
+  canvas.style.height = sizeCSS + "px";
+
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 window.addEventListener("resize", () => {
@@ -449,6 +476,81 @@ function initLeaderboard() {
   const entries = window.LEADERBOARD || [];
   updateLeaderboard(entries);
 }
+
+
+canvas.addEventListener("pointerdown", e => {
+  canvas.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, e);
+
+  if (pointers.size === 1) {
+    lastPanX = e.clientX;
+    lastPanY = e.clientY;
+  }
+});
+
+canvas.addEventListener("pointerup", e => {
+  pointers.delete(e.pointerId);
+  pinchStartDist = null;
+  pinchStartScale = null;
+  lastPanX = null;
+  lastPanY = null;
+});
+
+canvas.addEventListener("pointercancel", e => {
+  pointers.delete(e.pointerId);
+  pinchStartDist = null;
+  pinchStartScale = null;
+  lastPanX = null;
+  lastPanY = null;
+});
+
+function handlePan(e) {
+  if (lastPanX === null) return;
+
+  const dx = e.clientX - lastPanX;
+  const dy = e.clientY - lastPanY;
+
+  viewOffsetX += dx;
+  viewOffsetY += dy;
+
+  lastPanX = e.clientX;
+  lastPanY = e.clientY;
+
+  draw();
+}
+
+function handlePinch() {
+  const [p1, p2] = [...pointers.values()];
+
+  const dx = p1.clientX - p2.clientX;
+  const dy = p1.clientY - p2.clientY;
+  const dist = Math.hypot(dx, dy);
+
+  if (!pinchStartDist) {
+    pinchStartDist = dist;
+    pinchStartScale = viewScale;
+    return;
+  }
+
+  const factor = dist / pinchStartDist;
+  viewScale = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartScale * factor));
+
+  draw();
+}
+
+canvas.addEventListener("pointermove", e => {
+  if (!pointers.has(e.pointerId)) return;
+
+  pointers.set(e.pointerId, e);
+
+  if (pointers.size === 1) {
+    handlePan(e);
+  }
+
+  if (pointers.size === 2) {
+    handlePinch();
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   initGame();
