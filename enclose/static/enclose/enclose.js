@@ -60,6 +60,8 @@ function initGame() {
   feedback.textContent = "Solution déjà validée ✔️";
   }
   
+  updateTouchAction();
+
   resizeCanvas();
   draw();
   updateUI();
@@ -353,6 +355,8 @@ function resizeCanvas() {
   canvas.style.height = sizeCSS + "px";
 
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  updateTouchAction();
+
 }
 
 window.addEventListener("resize", () => {
@@ -548,6 +552,7 @@ function handlePinch() {
   viewScale = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartScale * factor));
 
   clampPan();
+  updateTouchAction();
   draw();
 }
 
@@ -581,6 +586,14 @@ canvas.addEventListener("pointermove", e => {
     handlePinch();
   }
 });
+
+function updateTouchAction() {
+  if (viewScale === 1) {
+    canvas.style.touchAction = "pan-y";
+  } else {
+    canvas.style.touchAction = "none";
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   initGame();

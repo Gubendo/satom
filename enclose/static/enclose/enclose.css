@@ -37,7 +37,6 @@ html, body {
   display: block;
   width: 100%;
   height: auto;
-  touch-action: none;
 }
 
 /* Panneaux latéraux */
