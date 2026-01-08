@@ -31,9 +31,8 @@
 /* Canvas responsive */
 #board {
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
 }
 
 /* Panneaux latéraux */
@@ -49,29 +48,6 @@
 #submit-btn {
   width: 100%;
   margin-top: 1rem;
-}
-
-@media (max-width: 900px) {
-  .enclose-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .side-panel.left {
-    order: 2;
-  }
-
-  .board-wrapper {
-    order: 1;
-  }
-
-  .side-panel.right {
-    order: 3;
-  }
-
-  #board {
-    width: 95vw;
-    max-width: 420px;
-  }
 }
 
 .subtitle {
@@ -214,13 +190,14 @@ canvas.locked {
   pointer-events: none;
 
   transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateX(-50%) scale(0.97);
 
   z-index: 9999;
 }
 
 .drawer.open {
   opacity: 1;
-  transform: scale(1);
+  transform: translateX(-50%) scale(1);
   pointer-events: auto;
 }
 
@@ -249,4 +226,60 @@ canvas.locked {
 
 .current-puzzle.locked-puzzle {
   font-weight: 3000;
+}
+
+@media (max-width: 900px) {
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .enclose-page {
+    max-width: 100%;
+    padding: 0.5rem;
+  }
+
+  .enclose-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .side-panel.left,
+  .side-panel.right {
+    width: 95vw;
+    max-width: 420px;
+  }
+
+  .leaderboard {
+    width: 100%;
+  }
+
+  .board-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .burger {
+    font-size: 34px;
+    padding: 10px 12px;
+  }
+
+  .drawer {
+    position: fixed;
+    top: 60px;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 90vw;
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    border-radius: 12px;
+  }
 }

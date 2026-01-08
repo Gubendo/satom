@@ -139,7 +139,7 @@ def motus(guess, word, a_list, lettres):
 def home(request):
     challenges = Challenge.objects.all().order_by('number')
     daily_word = Challenge.objects.filter(date=date.today()).first()
-    print(date.today())
+
     if not daily_word:
         words = MotPossible.objects.filter(
             used=False,

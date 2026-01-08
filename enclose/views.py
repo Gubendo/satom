@@ -108,7 +108,6 @@ def submit_score(request):
     data = json.loads(request.body)
     puzzle = EnclosePuzzle.objects.get(puzzle_id=data["puzzle_id"])
 
-    print("hello")
     PuzzleScore.objects.update_or_create(
         user=request.user,
         puzzle=puzzle,

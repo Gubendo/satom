@@ -10,7 +10,7 @@ const GAME_LOCKED = window.GAME_LOCKED;
 
 
 const GRID_SIZE = PUZZLE.size;   // ex: 8
-const CELL = 60;
+let CELL = 60;
 const PADDING = 20;
 
 const walls = new Set();
@@ -302,18 +302,27 @@ function disableCanvasInteraction() {
 
 function resizeCanvas() {
   const wrapper = document.querySelector(".board-wrapper");
-  const size = PUZZLE.size;
+  const n = PUZZLE.size;
 
   const available = wrapper.clientWidth;
 
-  const cellSize = Math.floor(available / size);
-  const canvasSize = cellSize * size;
+  CELL = Math.floor(available / n);
+
+  const canvasSize = CELL * n + PADDING * 2;
 
   canvas.width = canvasSize;
   canvas.height = canvasSize;
+
+  canvas.style.width = canvasSize + "px";
+  canvas.style.height = canvasSize + "px";
 }
 
 window.addEventListener("resize", () => {
+  resizeCanvas();
+  draw();
+});
+
+window.addEventListener("load", () => {
   resizeCanvas();
   draw();
 });
