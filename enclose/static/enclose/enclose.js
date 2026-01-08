@@ -20,7 +20,7 @@ let viewScale = 1;
 let viewOffsetX = 0;
 let viewOffsetY = 0;
 
-const MIN_ZOOM = 0.6;
+const MIN_ZOOM = 1;
 const MAX_ZOOM = 3;
 
 let pointers = new Map();
@@ -122,8 +122,18 @@ function drawWalls() {
 
 function getCellFromMouse(event) {
   const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left - PADDING;
-  const y = event.clientY - rect.top - PADDING;
+
+  let x = event.clientX - rect.left;
+  let y = event.clientY - rect.top;
+
+  x -= viewOffsetX;
+  y -= viewOffsetY;
+
+  x /= viewScale;
+  y /= viewScale;
+
+  x -= PADDING;
+  y -= PADDING;
 
   if (x < 0 || y < 0) return null;
 
@@ -133,6 +143,7 @@ function getCellFromMouse(event) {
   if (cx < 0 || cy < 0 || cx >= GRID_SIZE || cy >= GRID_SIZE) {
     return null;
   }
+
   return [cx, cy];
 }
 
@@ -516,6 +527,7 @@ function handlePan(e) {
   lastPanX = e.clientX;
   lastPanY = e.clientY;
 
+  clampPan();
   draw();
 }
 
@@ -535,7 +547,25 @@ function handlePinch() {
   const factor = dist / pinchStartDist;
   viewScale = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartScale * factor));
 
+  clampPan();
   draw();
+}
+
+function clampPan() {
+  const wrapper = document.querySelector(".board-wrapper");
+  const n = PUZZLE.size;
+
+  const gridSize = CELL * n;
+
+  const scaled = gridSize * viewScale;
+
+  const visible = canvas.clientWidth;
+
+  const maxOffset = 0;
+  const minOffset = visible - scaled;
+
+  viewOffsetX = Math.min(maxOffset, Math.max(minOffset, viewOffsetX));
+  viewOffsetY = Math.min(maxOffset, Math.max(minOffset, viewOffsetY));
 }
 
 canvas.addEventListener("pointermove", e => {
