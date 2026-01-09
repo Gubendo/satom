@@ -309,7 +309,6 @@ submitBtn.onclick = async () => {
 
   document.getElementById("feedback").textContent =
     `Score enregistré – rang : ${data.rank}`;
-  console.log("test");
   updateLeaderboard(data.leaderboard_json);
 };
 
@@ -413,19 +412,18 @@ function updateLeaderboard(entries) {
   entries.forEach((entry, index) => {
   const li = document.createElement("li");
 
-  if (entry.area === 1) {
-    li.appendChild(
-    document.createTextNode(
-      `${entry.username} - ${entry.area} point (${entry.walls} murs) `
-    )
-  );
-  } 
-  else {
-    li.appendChild(
-      document.createTextNode(
-        `${entry.username} - ${entry.area} points (${entry.walls} murs) `
-      )
-  );
+  if (gameLocked) {
+
+    if (entry.area === 1) {
+      li.textContent = `${entry.username} - ${entry.area} point (${entry.walls} murs)`;
+    } else {
+      li.textContent = `${entry.username} - ${entry.area} points (${entry.walls} murs)`;
+    }
+
+  } else {
+
+    li.textContent = `${entry.username} - ??? points`;
+
   }
 
   if (entry.first_finisher) {
