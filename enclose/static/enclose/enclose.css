@@ -1,7 +1,12 @@
 html, body {
-  touch-action: pan-y;   /* scroll vertical OK */
+  touch-action: pan-y;
+  background-color : #1b6b3a;
+  color: #f3f6f0;
 }
 
+h1, h3 {
+  color: #f3f6f0;
+}
 .enclose-page {
   max-width: 1400px;
   margin: 0 auto;
@@ -30,6 +35,7 @@ html, body {
   width: 100%;
   display: flex;
   justify-content: center;
+  
 }
 
 /* Canvas responsive */
@@ -55,7 +61,7 @@ html, body {
 }
 
 .subtitle {
-  color: #666;
+  color: #cfe3d6;;
 }
 
 button {
@@ -63,15 +69,25 @@ button {
   padding: 10px;
   font-size: 1em;
   border-radius: 6px;
-  border: none;
+
   cursor: pointer;
-  background: #333;
-  color: white;
+
+  background: #2d8f4e;
+  color: #f3f6f0;
+  border: 2px solid #133a20;
+
+  box-shadow: 0 2px 0 #133a20;
+}
+
+button:hover:not(:disabled) {
+  background: #36a35b;
 }
 
 button:disabled {
-  opacity: 0.4;
   cursor: not-allowed;
+  background: #1f4d2a;
+  color: #9fbda8;
+  box-shadow: none;
 }
 
 canvas.locked {
@@ -107,7 +123,7 @@ canvas.locked {
 
 .leaderboard li.me {
   font-weight: bold;
-  color: #2c7be5;
+  color: #ffd866;
 }
 
 @keyframes slideIn {
@@ -122,7 +138,7 @@ canvas.locked {
 }
 
 .puzzle-date {
-  color: #999;
+  color: #cfe3d6 ;
   font-style: italic;
 }
 
@@ -165,7 +181,9 @@ canvas.locked {
   cursor: pointer;
 
   z-index: 10000;
-  color: #111;
+
+  color: #ffe9c6;
+  text-shadow: 0 2px 0 #3a1f0c;
 }
 
 .burger:hover {
@@ -174,15 +192,13 @@ canvas.locked {
 
 .drawer {
   position: fixed;
-  top: 44px;         /* sous le bouton */
+  top: 44px;
   left: 12px;
 
   width: 260px;
   max-height: 60vh;
   overflow-y: auto;
 
-  background: white;
-  border: 1px solid #ddd;
   border-radius: 12px;
 
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
@@ -196,6 +212,10 @@ canvas.locked {
   transition: opacity 0.2s ease, transform 0.2s ease;
 
   z-index: 9999;
+
+  background: #2a6a3f;
+  border: 1px solid #0f2f19;
+  color: #f3f6f0;
 }
 
 .drawer.open {
@@ -214,16 +234,18 @@ canvas.locked {
 }
 
 .drawer li:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
 }
 
 .current-puzzle {
   font-weight: bold;
-  color: #1a73e8;
+  color: lightblue;
 }
 
 .locked-puzzle {
-  color: green;
+  color: #8be088;
 }
 
 .current-puzzle.locked-puzzle {
@@ -268,6 +290,8 @@ canvas.locked {
   .burger {
     font-size: 34px;
     padding: 10px 12px;
+    color: #f3f6f0;
+    text-shadow: 0 1px 2px rgba(0,0,0,.5);
   }
 
   .drawer {
@@ -283,9 +307,32 @@ canvas.locked {
     overflow-y: auto;
 
     border-radius: 12px;
+
   }
 
   .drawer.open {
     transform: translateX(-50%);
   }
+  
+}
+
+.drawer {
+  background: linear-gradient(145deg, #7a4a21, #5a3318);
+  border-radius: 16px;
+  border: 3px solid #3a1f0c;
+  box-shadow:
+    0 4px 0 #3a1f0c,
+    0 8px 18px rgba(0,0,0,0.3);
+  padding: 12px 14px;
+}
+
+.side-panel h3,
+.drawer h3 {
+  font-family: "Trebuchet MS", system-ui, sans-serif;
+  letter-spacing: 0.03em;
+  color: #ffe9c6;
+}
+
+.leaderboard li {
+  color: #fff3d6;
 }

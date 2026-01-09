@@ -36,6 +36,41 @@ let pinchStartY = null;
 
 const submitBtn = document.getElementById("submit-btn");
 
+const horseImg = new Image();
+horseImg.src = window.HORSE_SPRITE_URL;
+
+let horseLoaded = false;
+
+horseImg.onload = () => {
+  horseLoaded = true;
+  draw();
+};
+
+const tileImages = {
+  grass: new Image(),
+  water: new Image(),
+  field: new Image(),
+  wall: new Image(),
+};
+
+tileImages.grass.src = window.TILES.grass;
+tileImages.water.src = window.TILES.water;
+tileImages.field.src = window.TILES.field;
+tileImages.wall.src = window.TILES.wall;
+
+let tilesLoaded = false;
+let loadedCount = 0;
+
+Object.values(tileImages).forEach(img => {
+  img.onload = () => {
+    loadedCount++;
+    if (loadedCount === 3) {
+      tilesLoaded = true;
+      draw();
+    }
+  };
+});
+
 function findHorse() {
   for (let y = 0; y < GRID_SIZE; y++) {
     for (let x = 0; x < GRID_SIZE; x++) {
@@ -58,21 +93,18 @@ function initGame() {
   if (GAME_LOCKED) {
     lockGame();
   }
-
-  if (GAME_LOCKED) {
-  feedback.textContent = "Solution déjà validée ✔️";
-  }
   
   updateTouchAction();
 
   resizeCanvas();
   draw();
   updateUI();
+  ctx.imageSmoothingEnabled = false;
 }
 
 function drawGrid() {
-  ctx.strokeStyle = "#444";
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#e6e9ed";
+  ctx.lineWidth = 0.5;
 
   for (let i = 0; i <= GRID_SIZE; i++) {
     const p = PADDING + i * CELL;
@@ -89,7 +121,9 @@ function drawGrid() {
   }
 }
 
-function drawTerrain() {
+function drawWater() {
+  if (!tilesLoaded) return;
+
   for (let y = 0; y < GRID_SIZE; y++) {
     for (let x = 0; x < GRID_SIZE; x++) {
       if (PUZZLE.grid[y][x] !== "W") continue;
@@ -97,21 +131,57 @@ function drawTerrain() {
       const px = PADDING + x * CELL;
       const py = PADDING + y * CELL;
 
-      ctx.fillStyle = "#6caed6"; // eau
-      ctx.fillRect(px, py, CELL, CELL);
+      ctx.drawImage(tileImages.water, px, py, CELL, CELL);
     }
   }
 }
 
 function drawHorse() {
-  const [hx, hy] = HORSE_POS;
-  const cx = PADDING + hx * CELL + CELL / 2;
-  const cy = PADDING + hy * CELL + CELL / 2;
+  if (!horseLoaded) return;
 
-  ctx.fillStyle = "#111";
-  ctx.beginPath();
-  ctx.arc(cx, cy, CELL * 0.25, 0, Math.PI * 2);
-  ctx.fill();
+  const [hx, hy] = HORSE_POS;
+
+  const px = PADDING + hx * CELL;
+  const py = PADDING + hy * CELL;
+
+  const margin = CELL * 0.1;
+  const size = CELL - margin * 2;
+
+  ctx.drawImage(
+    horseImg,
+    px + margin,
+    py + margin,
+    size,
+    size
+  );
+}
+
+function drawField() {
+  if (!tilesLoaded) return;
+
+  const areaCells = computeAreaJS();
+  if (!areaCells) return;
+
+  for (const [x, y] of areaCells) {
+    const px = PADDING + x * CELL;
+    const py = PADDING + y * CELL;
+
+    ctx.drawImage(tileImages.field, px, py, CELL, CELL);
+  }
+}
+
+function drawGrass() {
+  if (!tilesLoaded) return;
+
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+
+      const px = PADDING + x * CELL;
+      const py = PADDING + y * CELL;
+
+      ctx.drawImage(tileImages.grass, px, py, CELL, CELL);
+    }
+  }
 }
 
 function drawWalls() {
@@ -120,8 +190,12 @@ function drawWalls() {
     const px = PADDING + x * CELL;
     const py = PADDING + y * CELL;
 
-    ctx.fillStyle = "#000";
-    ctx.fillRect(px, py, CELL, CELL);
+    if (tileImages.wall.complete) {
+      ctx.drawImage(tileImages.wall, px, py, CELL, CELL);
+    } else {
+      ctx.fillStyle = "#4a3218";
+      ctx.fillRect(px, py, CELL, CELL);
+    }
   }
 }
 
@@ -174,8 +248,9 @@ function draw() {
   ctx.translate(viewOffsetX, viewOffsetY);
   ctx.scale(viewScale, viewScale);
 
-  drawArea();
-  drawTerrain();
+  drawGrass();
+  drawWater();
+  drawField();
   drawWalls();
   drawGrid();
   drawHorse();
@@ -307,8 +382,6 @@ submitBtn.onclick = async () => {
 
   lockGame();
 
-  document.getElementById("feedback").textContent =
-    `Score enregistré – rang : ${data.rank}`;
   updateLeaderboard(data.leaderboard_json);
 };
 
@@ -325,7 +398,6 @@ function lockGame() {
   disableCanvasInteraction();
 
   submitBtn.disabled = true;
-  document.getElementById("feedback").classList.add("locked");
 
   canvas.classList.add("locked");
 }

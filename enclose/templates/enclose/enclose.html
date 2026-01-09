@@ -46,7 +46,6 @@
       <div class="stat">Murs restants : <span id="walls-left"></span></div>
 
       <button id="submit-btn">Valider</button>
-      <div id="feedback"></div>
     </aside>
 
   </main>
@@ -58,6 +57,15 @@
   window.SAVED_WALLS = {{ saved_walls|safe }};
   window.GAME_LOCKED = {{ locked|yesno:"true,false" }};
   window.LEADERBOARD = {{ leaderboard_json|safe }};
+
+  window.HORSE_SPRITE_URL = "{% static 'enclose/img/horse.png' %}";
+  window.TILES = {
+    grass: "{% static 'enclose/img/grass.png' %}",
+    water: "{% static 'enclose/img/water.png' %}",
+    field: "{% static 'enclose/img/field.png' %}",
+    wall: "{% static 'enclose/img/wall.png' %}",
+  };
+
 
 </script>
 <script src="{% static 'enclose/enclose.js' %}"></script>
