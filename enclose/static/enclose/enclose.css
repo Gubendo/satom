@@ -194,14 +194,12 @@ canvas.locked {
   pointer-events: none;
 
   transition: opacity 0.2s ease, transform 0.2s ease;
-  transform: translateX(-50%) scale(0.97);
 
   z-index: 9999;
 }
 
 .drawer.open {
   opacity: 1;
-  transform: translateX(-50%) scale(1);
   pointer-events: auto;
 }
 
@@ -285,5 +283,9 @@ canvas.locked {
     overflow-y: auto;
 
     border-radius: 12px;
+  }
+
+  .drawer.open {
+    transform: translateX(-50%);
   }
 }

@@ -34,8 +34,14 @@
     }
 
      a {
-    color: ##165c83;
+    color: #165c83;
     }
+
+    a.test {
+    color: white !important;
+    font-weight: bold;
+    }
+    
     .btn-primary.done-btn {
 	background-color: #2c8b31;
 	border-color: #2c8b31;
@@ -58,7 +64,7 @@
     <div class="container">
         <a class="navbar-brand" href="{% url 'hello_world' %}">
             <img src="{% static 'peepo.png' %}" width="30" height="30" alt="">
-            Satom.fr
+            Satom.app
 
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,8 +86,11 @@
                   <a class="nav-link" href="{% url 'rules' %}">Règles</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link test" href="{% url 'enclose' %}">PATURAGE (NEW)</a>
+               </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{% url 'dashboard' %}">Compte</a>
-            </li>
+              </li>
           </ul>
         </div>
     </div>
