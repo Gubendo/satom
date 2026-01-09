@@ -89,6 +89,7 @@ def enclose_view(request):
         "locked": bool(user_score),
         "saved_walls": user_score.walls if user_score else [],
         "puzzle_date": puzzle.date,
+        "puzzle_name": puzzle.puzzle_id,
         "leaderboard_json": json.dumps(leaderboard_data),
         "user_score": user_score,
     }
