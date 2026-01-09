@@ -31,6 +31,9 @@ let pinchStartScale = null;
 let lastPanX = null;
 let lastPanY = null;
 
+let pinchStartX = null;
+let pinchStartY = null;
+
 const submitBtn = document.getElementById("submit-btn");
 
 function findHorse() {
@@ -291,7 +294,7 @@ submitBtn.onclick = async () => {
     walls: Array.from(walls).map(k => k.split(",").map(Number))
   };
 
-  const res = await fetch("/enclose/submit/", {
+  const res = await fetch("/paturage/submit/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -466,7 +469,7 @@ async function loadPuzzleList() {
   const ul = document.getElementById("puzzle-list");
 
   const response = await fetch(
-    `/enclose/api/puzzles/?current_date=${PUZZLE.date}`
+    `/paturage/api/puzzles/?current_date=${PUZZLE.date}`
   );
   const puzzles = await response.json();
 
@@ -536,20 +539,39 @@ function handlePan(e) {
 }
 
 function handlePinch() {
-  const [p1, p2] = [...pointers.values()];
+  const arr = [...pointers.values()];
+  const p1 = arr[0];
+  const p2 = arr[1];
 
   const dx = p1.clientX - p2.clientX;
   const dy = p1.clientY - p2.clientY;
   const dist = Math.hypot(dx, dy);
 
+  const pinchX = (p1.clientX + p2.clientX) / 2;
+  const pinchY = (p1.clientY + p2.clientY) / 2;
+
+  const rect = canvas.getBoundingClientRect();
+  const cx = pinchX - rect.left;
+  const cy = pinchY - rect.top;
+
   if (!pinchStartDist) {
     pinchStartDist = dist;
     pinchStartScale = viewScale;
+    pinchStartX = cx;
+    pinchStartY = cy;
     return;
   }
 
   const factor = dist / pinchStartDist;
-  viewScale = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartScale * factor));
+  const newScale = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartScale * factor));
+
+  const worldX = (cx - viewOffsetX) / viewScale;
+  const worldY = (cy - viewOffsetY) / viewScale;
+
+  viewScale = newScale;
+
+  viewOffsetX = cx - worldX * viewScale;
+  viewOffsetY = cy - worldY * viewScale;
 
   clampPan();
   updateTouchAction();
