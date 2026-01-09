@@ -61,6 +61,13 @@ tileImages.wall.src = window.TILES.wall;
 let tilesLoaded = false;
 let loadedCount = 0;
 
+const burger = document.getElementById("burger-btn");
+
+burger.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  burger.click();
+});
+
 Object.values(tileImages).forEach(img => {
   img.onload = () => {
     loadedCount++;

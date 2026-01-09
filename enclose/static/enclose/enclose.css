@@ -184,6 +184,8 @@ canvas.locked {
 
   color: #ffe9c6;
   text-shadow: 0 2px 0 #3a1f0c;
+  background-color: transparent !important;
+  -webkit-focus-ring-color: transparent;
 }
 
 .burger:hover {
@@ -345,10 +347,11 @@ canvas.locked {
 .burger:active {
   transform: scale(0.92);
   opacity: 0.8;
+  background-color: transparent !important;
 }
 
 * {
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
 }
 
 .burger:focus {
