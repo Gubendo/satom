@@ -290,8 +290,6 @@ canvas.locked {
   .burger {
     font-size: 34px;
     padding: 10px 12px;
-    color: #f3f6f0;
-    text-shadow: 0 1px 2px rgba(0,0,0,.5);
   }
 
   .drawer {
@@ -335,4 +333,36 @@ canvas.locked {
 
 .leaderboard li {
   color: #fff3d6;
+}
+
+.burger:focus,
+.burger:active,
+.burger:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.burger:active {
+  transform: scale(0.92);
+  opacity: 0.8;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.burger:focus {
+  outline: none !important;
+}
+
+.burger:focus-visible {
+  outline: none !important;
+}
+
+.burger::-moz-focus-inner {
+  border: 0;
+}
+
+.burger {
+  accent-color: transparent;
 }
