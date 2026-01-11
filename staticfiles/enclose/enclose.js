@@ -66,10 +66,14 @@ let loadedCount = 0;
 
 const burger = document.getElementById("burger-btn");
 
-burger.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  burger.click();
-});
+burger.addEventListener(
+  "touchstart",
+  (e) => {
+    e.preventDefault();
+    burger.click();
+  },
+  { passive: false }   // <-- clé
+);
 
 Object.values(tileImages).forEach(img => {
   img.onload = () => {
@@ -704,6 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initGame();
   initLeaderboard();
   initPuzzleMenu();
+  initMusic();
 
   loop = document.getElementById("music-loop");
 
@@ -723,16 +728,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
-  document.getElementById("music-toggle").addEventListener("click", () => {
+  const musicToggle = document.getElementById("music-toggle");
 
-  musicEnabled = !musicEnabled;
+  if (musicToggle) {
+    musicToggle.addEventListener("click", () => {
+      musicEnabled = !musicEnabled;
 
-  if (!musicEnabled) {
-    loop.pause();
-  } else {
-    loop.play();
-  }
-  });
+      if (!musicEnabled) {
+        loop.pause();
+      } else {
+        loop.play();
+      }
+    });
+}
 });
 
 function enableAudio() {
@@ -741,3 +749,19 @@ function enableAudio() {
 }
 
 document.addEventListener("click", enableAudio);
+
+let musicInitialized = false;
+
+function initMusic() {
+  if (musicInitialized) return;
+  musicInitialized = true;
+
+  const music = document.getElementById("music-loop");
+
+  music.preload = "auto";
+
+  music.addEventListener("canplaythrough", () => {
+    console.log("Fully bufferable");
+  });
+  document.addEventListener("click", () => music.play(), { once: true });
+}

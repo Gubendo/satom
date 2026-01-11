@@ -708,6 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initGame();
   initLeaderboard();
   initPuzzleMenu();
+  initMusic();
 
   loop = document.getElementById("music-loop");
 
@@ -748,3 +749,19 @@ function enableAudio() {
 }
 
 document.addEventListener("click", enableAudio);
+
+let musicInitialized = false;
+
+function initMusic() {
+  if (musicInitialized) return;
+  musicInitialized = true;
+
+  const music = document.getElementById("music-loop");
+
+  music.preload = "auto";
+
+  music.addEventListener("canplaythrough", () => {
+    console.log("Fully bufferable");
+  });
+  document.addEventListener("click", () => music.play(), { once: true });
+}
