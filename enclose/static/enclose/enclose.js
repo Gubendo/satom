@@ -66,10 +66,14 @@ let loadedCount = 0;
 
 const burger = document.getElementById("burger-btn");
 
-burger.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  burger.click();
-});
+burger.addEventListener(
+  "touchstart",
+  (e) => {
+    e.preventDefault();
+    burger.click();
+  },
+  { passive: false }   // <-- clé
+);
 
 Object.values(tileImages).forEach(img => {
   img.onload = () => {
@@ -723,16 +727,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
-  document.getElementById("music-toggle").addEventListener("click", () => {
+  const musicToggle = document.getElementById("music-toggle");
 
-  musicEnabled = !musicEnabled;
+  if (musicToggle) {
+    musicToggle.addEventListener("click", () => {
+      musicEnabled = !musicEnabled;
 
-  if (!musicEnabled) {
-    loop.pause();
-  } else {
-    loop.play();
-  }
-  });
+      if (!musicEnabled) {
+        loop.pause();
+      } else {
+        loop.play();
+      }
+    });
+}
 });
 
 function enableAudio() {
