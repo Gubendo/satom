@@ -41,6 +41,9 @@ horseImg.src = window.HORSE_SPRITE_URL;
 
 let horseLoaded = false;
 
+let loop;
+let audioEnabled = true;
+
 horseImg.onload = () => {
   horseLoaded = true;
   draw();
@@ -88,6 +91,7 @@ function findHorse() {
 }
 
 const HORSE_POS = findHorse();
+
 
 function initGame() {
   canvas.width = GRID_SIZE * CELL + PADDING * 2;
@@ -694,8 +698,46 @@ function updateTouchAction() {
   }
 }
 
+let musicEnabled = true;
+
 document.addEventListener("DOMContentLoaded", () => {
   initGame();
   initLeaderboard();
   initPuzzleMenu();
+
+  loop = document.getElementById("music-loop");
+
+  loop.volume = 0.3;
+
+  const audioBtn = document.getElementById("audio-toggle");
+
+  audioBtn.addEventListener("click", () => {
+    audioEnabled = !audioEnabled;
+
+    if (audioEnabled) {
+      loop.muted = false;
+      audioBtn.textContent = "🔊";
+    } else {
+      loop.muted = true;
+      audioBtn.textContent = "🔇";
+    }
+  });
+  
+  document.getElementById("music-toggle").addEventListener("click", () => {
+
+  musicEnabled = !musicEnabled;
+
+  if (!musicEnabled) {
+    loop.pause();
+  } else {
+    loop.play();
+  }
+  });
 });
+
+function enableAudio() {
+  document.removeEventListener("click", enableAudio);
+  loop.play().catch(e => console.log("Play blocked:", e));
+}
+
+document.addEventListener("click", enableAudio);

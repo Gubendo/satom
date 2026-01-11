@@ -313,6 +313,11 @@ canvas.locked {
   .drawer.open {
     transform: translateX(-50%);
   }
+
+  #audio-toggle {
+  font-size: 34px;
+  padding: 10px 12px;
+  }
   
 }
 
@@ -368,4 +373,72 @@ canvas.locked {
 
 .burger {
   accent-color: transparent;
+}
+
+.audio-btn {
+  all: unset;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  cursor: pointer;
+  z-index: 10000;
+
+  color: #ffe9c6;
+  text-shadow: 0 2px 0 #3a1f0c;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+#audio-toggle {
+  all: unset;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  cursor: pointer;
+  z-index: 10000;
+
+  color: #ffe9c6;
+  text-shadow: 0 2px 0 #3a1f0c;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+#audio-toggle:hover {
+  opacity: 0.7;
+}
+
+#audio-toggle:focus,
+#audio-toggle:active,
+#audio-toggle:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+#audio-toggle:active {
+  transform: scale(0.92);
+  opacity: 0.8;
+}
+
+.audio-btn:hover {
+  opacity: 0.7;
+}
+
+.audio-btn:focus,
+.audio-btn:active,
+.audio-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.audio-btn:active {
+  transform: scale(0.92);
+  opacity: 0.8;
 }

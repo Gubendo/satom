@@ -1,8 +1,12 @@
 {% load static %}
-
+<head>
+<link rel="shortcut icon" type="image/png" href="{% static 'peepo.png' %}"/>
+</head>
+<title>Pâturage</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <button id="burger-btn" class="burger">☰</button>
+<button id="audio-toggle" class="audio-btn" aria-label="Activer / couper la musique">🔊</button>
 
 <div id="puzzle-drawer" class="drawer">
   <h3>Choisir un puzzle précédent</h3>
@@ -70,3 +74,5 @@
 </script>
 <script src="{% static 'enclose/enclose.js' %}"></script>
 <link rel="stylesheet" href="{% static 'enclose/enclose.css' %}">
+
+<audio id="music-loop" src="{% static 'enclose/audio/loop.wav' %}" loop></audio>
