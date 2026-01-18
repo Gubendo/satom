@@ -14,7 +14,7 @@ let CELL = 60;
 const PADDING = 20;
 
 const walls = new Set();
-let gameLocked = false;
+let gameLocked = GAME_LOCKED || false;
 
 let viewScale = 1;
 let viewOffsetX = 0;
@@ -43,6 +43,11 @@ let horseLoaded = false;
 
 let loop;
 let audioEnabled = true;
+let musicInitialized = false;
+
+let retryMode = false;
+
+const validatedWalls = new Set(SAVED_WALLS.map(w => `${w[0]},${w[1]}`));
 
 horseImg.onload = () => {
   horseLoaded = true;
@@ -276,7 +281,7 @@ function draw() {
 draw();
 
 function onCanvasClick(e) {
-  if (GAME_LOCKED) return;
+  if (gameLocked) return;
 
   const cell = getCellFromMouse(e);
   if (!cell) return;
@@ -397,8 +402,50 @@ submitBtn.onclick = async () => {
 
   lockGame();
 
+  validatedWalls.clear();
+  for (const k of walls) {
+    validatedWalls.add(k);
+  }
+
   updateLeaderboard(data.leaderboard_json);
 };
+
+document.getElementById("toggle-retry-btn").addEventListener("click", () => {
+
+  if (!retryMode) {
+    retryMode = true;
+
+    walls.clear();
+    enableCanvasInteraction();
+    draw();
+    updateUI();
+
+    document.getElementById("toggle-retry-btn").textContent = "Afficher ma solution";
+    return;
+  }
+
+  if (retryMode) {
+    retryMode = false;
+
+    walls.clear();
+    for (const k of validatedWalls) {
+      walls.add(k);
+    }
+    
+    canvas.classList.add("locked");
+    disableCanvasInteraction();
+    draw();
+    updateUI();
+
+    document.getElementById("toggle-retry-btn").textContent = "Réessayer";
+  }
+});
+
+function enableCanvasInteraction() {
+  gameLocked = false;
+  canvas.classList.remove("locked");
+  canvas.addEventListener("click", onCanvasClick);
+}
 
 function getCSRFToken() {
   return document.cookie
@@ -412,7 +459,13 @@ function lockGame() {
 
   disableCanvasInteraction();
 
-  submitBtn.disabled = true;
+  submitBtn.classList.add("hidden");
+
+  const toggleBtn = document.getElementById("toggle-retry-btn");
+  toggleBtn.classList.remove("hidden");
+  toggleBtn.textContent = "Réessayer";
+
+  retryMode = false;
 
   canvas.classList.add("locked");
 }
@@ -702,13 +755,11 @@ function updateTouchAction() {
   }
 }
 
-let musicEnabled = true;
 
 document.addEventListener("DOMContentLoaded", () => {
   initGame();
   initLeaderboard();
   initPuzzleMenu();
-  initMusic();
 
   loop = document.getElementById("music-loop");
 
@@ -716,6 +767,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const audioBtn = document.getElementById("audio-toggle");
 
+  if (audioBtn) {
   audioBtn.addEventListener("click", () => {
     audioEnabled = !audioEnabled;
 
@@ -727,41 +779,21 @@ document.addEventListener("DOMContentLoaded", () => {
       audioBtn.textContent = "🔇";
     }
   });
-  
-  const musicToggle = document.getElementById("music-toggle");
 
-  if (musicToggle) {
-    musicToggle.addEventListener("click", () => {
-      musicEnabled = !musicEnabled;
+  initMusic();
 
-      if (!musicEnabled) {
-        loop.pause();
-      } else {
-        loop.play();
-      }
-    });
-}
+  }
 });
 
-function enableAudio() {
-  document.removeEventListener("click", enableAudio);
-  loop.play().catch(e => console.log("Play blocked:", e));
-}
-
-document.addEventListener("click", enableAudio);
-
-let musicInitialized = false;
 
 function initMusic() {
   if (musicInitialized) return;
   musicInitialized = true;
 
-  const music = document.getElementById("music-loop");
+  loop.preload = "auto";
 
-  music.preload = "auto";
-
-  music.addEventListener("canplaythrough", () => {
+  loop.addEventListener("canplaythrough", () => {
     console.log("Fully bufferable");
   });
-  document.addEventListener("click", () => music.play(), { once: true });
+  document.addEventListener("click", () => loop.play(), { once: true });
 }
