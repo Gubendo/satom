@@ -1,1 +1,1 @@
-web: pip install --upgrade setuptools && python manage.py migrate && python manage.py setup_initial_data && python manage.py collectstatic --noinput && gunicorn sutom_game.wsgi:application 
+web: sudo apt-get install --reinstall python-pkg-resources && python manage.py migrate && python manage.py setup_initial_data && python manage.py collectstatic --noinput && gunicorn sutom_game.wsgi:application 
