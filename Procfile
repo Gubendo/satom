@@ -1,1 +1,1 @@
-web: pip install --force-reinstall -U setuptools && pip install --force-reinstall -U distribute && python manage.py migrate && python manage.py setup_initial_data && python manage.py collectstatic --noinput && gunicorn sutom_game.wsgi:application 
+web: pip install --force-reinstall -U setuptools && python manage.py migrate && python manage.py setup_initial_data && python manage.py collectstatic --noinput && gunicorn sutom_game.wsgi:application 
